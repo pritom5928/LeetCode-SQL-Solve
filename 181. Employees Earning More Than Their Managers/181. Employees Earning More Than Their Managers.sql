@@ -58,6 +58,9 @@ solution:
 
 select e.name as Employee from employee as e join employee as em on e.managerid = em.id where e.salary > em.salary 
 
+
+or =>
+
 SELECT e1.Name as Employee 
 FROM employee e1, employee e2 
 WHERE e1.managerid = e2.id AND e1.salary>e2.salary;
