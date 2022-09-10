@@ -67,4 +67,5 @@ Output:
 
 Solution:
 
-SELECT Name AS Customers FROM Customers WHERE NOT EXISTS (SELECT * FROM Orders WHERE Orders.Customerid = Customers.Id)
+SELECT Name AS Customers FROM Customers WHERE NOT EXISTS 
+(SELECT * FROM Orders WHERE Orders.Customerid = Customers.Id)
