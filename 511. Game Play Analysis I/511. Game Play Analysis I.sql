@@ -48,7 +48,7 @@ Output:
 +-----------+-------------+
 
 
-solution that beats 45.93% MySql Submisisons :
+solution that beats 56.89% MySql Submisisons :
 
 SELECT player_id, MIN(event_date) AS first_login
 FROM Activity 
