@@ -88,7 +88,7 @@ In the Sales department:
 Formula: COUNT(DISTINCT(outer query value < inner query value)) ==> THIS FORMULA, mainly defines
  that how many values from inner query is greater than the each iteration of outer query.
 
-
+Solution in MySQL that beats 36.80% MySQL online submissions :
 
 SELECT 
     d.name AS Department,
