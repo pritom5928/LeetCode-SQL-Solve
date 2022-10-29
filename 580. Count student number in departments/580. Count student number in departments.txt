@@ -34,3 +34,9 @@ select d.dept_id as depid, count(*) as number from student as s
         order by student_number desc;
 
 
+optimal solution:;
+
+select d.dept_name, count(s.student_id) as student_number from department as d 
+		left join student as s on d.dept_id = s.dept_id 
+        group by d.dept_id
+        order by student_number desc;
