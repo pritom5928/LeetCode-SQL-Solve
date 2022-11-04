@@ -1,0 +1,8 @@
+select 
+	i.invoice_id, c.customer_name, i.price,
+    count(contact_email) as contacts_cnt,
+    SUM(if(con.contact_email in (select distinct email from customers), 1 , 0)) as trusted_contacts_cnt
+from customers as c left join contacts as con on c.customer_id = con.user_id
+join invoices as i on c.customer_id = i.user_id
+group by i.invoice_id
+order by i.invoice_id;
