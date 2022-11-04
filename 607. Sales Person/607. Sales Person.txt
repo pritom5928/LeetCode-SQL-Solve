@@ -101,9 +101,19 @@ it is easy to tell that only salesperson John and Pam have
  sales to company RED, so we report all the other names in the table salesperson.
 
 
-Naive Solution that took 164 ms, faster than 84.49% of MySQL online submissions:
+Naive Solution that took 1064 ms, faster than 84.49% of MySQL online submissions:
 
 SELECt name FROM Salesperson WHERE sales_id NOT IN (
 	SELECT sales_id FROM Orders WHERE com_id in
 		(SELECT com_id FROM company WHERE name ='RED')
 );
+
+
+optimal solution that took 1164 ms, faster than 68.23% of MySQL online submissions:
+
+with orders_company_join as 
+(
+ select sales_id from orders o join company c 
+	on o.com_id = c.com_id where c.name = 'RED'
+)
+select name from Salesperson WHERE sales_id NOT IN (select * from orders_company_join);
