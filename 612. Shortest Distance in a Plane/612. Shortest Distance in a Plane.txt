@@ -31,3 +31,13 @@ select min(distance) from (
 	from point2d p1 join point2d p2 
 	on p1.x<>p2.x and p1.y<>p2.y
 ) as DistanceList;
+
+solve in MySQL with Common Table Expression: 
+
+with DistanceList_CTE as (
+select 
+		cast(round(sqrt(power((p2.x-p1.x),2)  + power((p2.y-p1.y),2)),0) as decimal(5,2)) as distance
+	from point2d p1 join point2d p2 
+	on p1.x<>p2.x and p1.y<>p2.y
+)
+select min(distance) from DistanceList_CTE;
