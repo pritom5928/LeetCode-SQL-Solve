@@ -57,10 +57,20 @@ WHERE 1<= (SELECT count(*) FROM views v2
 ORDER BY id ASC;
 
 
-solution by normal clause with 974ms runtime beats 8.22% MySQL submission:
+quite optimal solution by normal clause with 719ms runtime beats 31.40% MySQL submission:
 
 select 
 	distinct(author_id) as id
 from views
 where author_id = viewer_id
+order by id asc;
+
+
+more optimal solution by group by & having with Runtime 470 ms beats 90.80% MySQL submission:
+
+select 
+	author_id as id
+from views
+group by author_id, viewer_id
+having author_id = viewer_id
 order by id asc;
