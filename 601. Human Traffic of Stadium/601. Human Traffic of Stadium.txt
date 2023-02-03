@@ -65,3 +65,20 @@ valuecount as (
   select *, count(*) over(partition by grp) as consecutiveValueCount from cte 
 )
 select id, visit_date, people from valuecount where consecutiveValueCount >=3;
+
+
+Solution with 642 ms runtime that beats 35.34% MySQL submission:
+
+with temp_stadium_100 as (
+    select * from Stadium where people >= 100
+)
+
+select *
+from temp_stadium_100 as S
+where
+    (S.id + 1 in (select id from temp_stadium_100) and S.id + 2 in (select id from temp_stadium_100))
+    or
+    (S.id - 1 in (select id from temp_stadium_100) and S.id - 2 in (select id from temp_stadium_100))
+    or
+    (S.id + 1 in (select id from temp_stadium_100) and S.id - 1 in (select id from temp_stadium_100))
+order by visit_date asc;
