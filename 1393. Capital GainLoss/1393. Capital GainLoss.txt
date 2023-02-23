@@ -77,3 +77,15 @@ select
 	) as s
 ) as result 
 group by result.stock_name;
+
+
+
+easy solution by group by Runtime with 935 ms Runtime beats 44.54% MySQL online submissions:
+
+
+ select
+	stock_name, sum(if(operation = 'Sell', price, price*-1))
+ from stocks
+ group by stock_name;
+
+
