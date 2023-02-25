@@ -71,6 +71,8 @@ We return only product 1 as it is the product that was only sold in the spring o
 
 Solution with 1774ms runtime that beats 56.92% MySQL submissions:
 
+
+
 select 
 	product_id, 
     product_name
