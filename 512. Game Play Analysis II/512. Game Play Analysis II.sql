@@ -1,5 +1,6 @@
 512. Game Play Analysis II
 Level: Easy
+
 Table: Activity
 
 +--------------+---------+
@@ -10,6 +11,8 @@ Table: Activity
 | event_date   | date    |
 | games_played | int     |
 +--------------+---------+
+
+
 (player_id, event_date) is the primary key of this table.
 This table shows the activity of players of some game.
 Each row is a record of a player who logged in and played a number of games
@@ -17,6 +20,7 @@ Each row is a record of a player who logged in and played a number of games
 
 
 Write a SQL query that reports the device that is first logged in for each player.
+
 
 The query result format is in the following example:
 
@@ -39,7 +43,6 @@ Result table:
 | 2         | 3         |
 | 3         | 1         |
 +-----------+-----------+
-
 
 
 Solution with group by clause: 
