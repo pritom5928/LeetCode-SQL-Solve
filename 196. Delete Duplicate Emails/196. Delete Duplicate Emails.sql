@@ -10,7 +10,9 @@ Table: Person
 | id          | int     |
 | email       | varchar |
 +-------------+---------+
+
 id is the primary key column for this table.
+
 Each row of this table contains an email. The emails will not contain uppercase letters.
  
 
@@ -40,6 +42,7 @@ Output:
 | 1  | john@example.com |
 | 2  | bob@example.com  |
 +----+------------------+
+
 Explanation: john@example.com is repeated two times. We keep the row with the smallest Id = 1.
 
 
