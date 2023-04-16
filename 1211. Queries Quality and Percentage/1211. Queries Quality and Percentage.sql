@@ -64,7 +64,7 @@ Cat queries quality equals ((2 / 5) + (3 / 3) + (4 / 7)) / 3 = 0.66
 Cat queries poor_ query_percentage is (1 / 3) * 100 = 33.33
 
 
-Naive Solution with CTE & JOIN Runtime 1136 ms Beats 81.63% :
+Faster Solution with CTE & JOIN Runtime 1136 ms Beats 81.63% :
 
 WITH CTE AS(
 	SELECT 
@@ -81,3 +81,14 @@ SELECT
 FROM Queries a LEFT JOIN CTE b 
 ON a.query_name = b.QueryName
 GROUP BY a.query_name;
+
+
+
+Solution with AVG clause Runtime 1565 ms Beats 11.51%: 
+
+SELECT 
+	query_name,
+    ROUND(AVG(rating/position), 2) AS quality ,
+    ROUND(AVG(rating < 3) * 100, 2) AS poor_query_percentage 
+FROM queries
+GROUP BY query_name;
