@@ -51,3 +51,21 @@ ROUND((
 / (
 	SELECT COUNT(DISTINCT player_id) FROM activity
 ), 2) AS fraction;
+
+
+solution with Runtime 1061 ms Beats 35.78% : 
+
+with Min_Date_CTE as
+(
+	SELECT 
+		player_id,
+        min(event_date) as event_date
+	from activity
+	group by player_id
+)
+SELECT 
+	ROUND(COUNT(*) / (SELECT COUNT(*) FROM Min_Date_CTE), 2) AS fraction
+FROM 
+	Min_Date_CTE a JOIN Activity b 
+ON a.player_id = b.player_id
+WHERE DATEDIFF(b.event_date, a.event_date) = 1;
