@@ -72,6 +72,9 @@ Average selling price for product 1 = ((100 * 5) + (15 * 20)) / 115 = 6.96
 Average selling price for product 2 = ((200 * 15) + (30 * 30)) / 230 = 16.96
 
 
+
+
+
 Solution by Join in MySQL Runtime 1178 ms Beats 93.47% :
 
 SELECT 
