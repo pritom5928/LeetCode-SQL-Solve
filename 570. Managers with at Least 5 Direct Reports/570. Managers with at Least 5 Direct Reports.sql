@@ -47,3 +47,15 @@ Output:
 | John |
 +------+
 
+Solution with simple JOIN & Agg() with 479 ms runtime & beats 83.47% MySQL online submisisons:
+
+WITH At_Least_5_CTE AS
+(
+	SELECT
+		ManagerId 
+	FROM employee 
+	GROUP BY ManagerId
+	HAVING COUNT(*)>=5
+)
+
+SELECT a.name FROM employee a JOIN At_Least_5_CTE b ON a.id = b.ManagerId; 
