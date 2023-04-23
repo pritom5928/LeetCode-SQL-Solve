@@ -28,3 +28,18 @@ question 285 has answer rate 1/1, while question 369 has 0/1 answer rate, so out
 Note:The highest answer rate meaning is: answer number's ratio in show number in the same question.
 
 
+Naive solution with simple aggregation:
+
+SELECT 
+	question_id
+ FROM (
+	SELECT 
+		question_id,
+		SUM(IF(action='answer',1,0)) AS ansnum,
+		SUM(IF(action='show',1,0)) AS shownum
+	FROM Survey_log
+	GROUP BY question_id
+) AS temp
+ORDER BY IFNULL(ansnum/SHOWNUM, 1) DESC 
+LIMIT 1;
+
