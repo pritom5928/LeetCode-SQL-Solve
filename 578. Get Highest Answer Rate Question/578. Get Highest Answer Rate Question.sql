@@ -43,3 +43,13 @@ SELECT
 ORDER BY IFNULL(ansnum/SHOWNUM, 1) DESC 
 LIMIT 1;
 
+
+
+Optimal solution with aggregation function expression:
+
+SELECT 
+	question_id
+FROM survey_log
+GROUP BY question_id
+ORDER BY AVG(IF(action = 'answer',1,0)) DESC
+LIMIT 1;
