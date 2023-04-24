@@ -105,3 +105,17 @@ Alice attended the Math exam 3 times, the Physics exam 2 times, and the Programm
 Bob attended the Math exam 1 time, the Programming exam 1 time, and did not attend the Physics exam.
 Alex did not attend any exams.
 John attended the Math exam 1 time, the Physics exam 1 time, and the Programming exam 1 time.
+
+
+
+Solution with Cross Join in MySQL with 1625 ms runtime beats 62.45% MySQL Submisisons:
+
+SELECT 
+	s.student_id,
+    s.student_name,
+    sub.subject_name,
+    SUM(IF(e.subject_name is null, 0, 1)) AS attended_exams
+FROM Students s CROSS JOIN Subjects sub
+LEFT JOIN Examinations e ON s.student_id = e.student_id AND sub.subject_name = e.subject_name
+GROUP BY s.student_id, s.student_name, sub.subject_name
+ORDER BY s.student_id, sub.subject_name;
