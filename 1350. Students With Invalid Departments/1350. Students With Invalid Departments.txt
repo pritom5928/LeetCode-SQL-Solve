@@ -1,3 +1,6 @@
+1350. Students With Invalid Departments
+Difficulty: Easy
+
 Table: Departments
 
 +---------------+---------+
@@ -65,4 +68,24 @@ Result table:
 +------+----------+
 
 John, Daiana, Steve and Jasmine are enrolled in departments 14, 33, 74 and 77 respectively. department 14, 33, 74 and 77 doesn't exist in the Departments table.
+
+
+
+Solution with CTE - Subquery:
+
+WITH Dept_CTE AS (
+	SELECT 
+		id   
+        FROM departments
+)
+
+SELECT 
+    id,
+    name
+FROM Students s WHERE s.department_id NOT IN (
+	SELECT 
+		id
+	FROM Dept_CTE
+);
+
 
