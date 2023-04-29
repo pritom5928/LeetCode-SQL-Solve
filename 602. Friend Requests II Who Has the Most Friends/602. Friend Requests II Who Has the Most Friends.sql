@@ -73,3 +73,19 @@ FROM (
 ) AS Result
 GROUP BY Result.requester_id
 ORDER BY num DESC LIMIT 1
+
+
+
+Solution with Corelated Subquery Runtime 508 ms Beats 47.54% MySQL Submissions:
+
+SELECT 
+	requester_id as id,
+    	(
+		SELECT 
+			COUNT(*) 
+		FROM Requestaccepted r1 
+                WHERE id = r1.requester_id OR id = r1.accepter_id
+	) as num
+FROM Requestaccepted
+GROUP BY requester_id
+ORDER BY num DESC LIMIT 1
