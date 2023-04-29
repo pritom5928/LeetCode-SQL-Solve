@@ -73,3 +73,22 @@ WHERE i1.tiv_2015 IN (
 	FROM insurance i3
     WHERE i1.pid != i3.pid
 );
+
+
+Optimal solution using Exists Runtime 855 ms Beats 84.27% MySQL submission:
+
+SELECT 
+	ROUND(SUM(TIV_2016),2) AS TIV_2016 
+FROM Insurance a
+WHERE EXISTS (
+	SELECT 
+		* 
+	FROM Insurance 
+    WHERE PID <> a.PID AND TIV_2015 = a.TIV_2015
+)
+AND NOT EXISTS (
+	SELECT 
+		* 
+	FROM Insurance 
+    WHERE PID <> a.PID AND (LAT,LON) = (a.LAT,a.LON)
+);
