@@ -47,3 +47,27 @@ The average salary of department '2' is (6000 + 10000)/2 = 8000, which is the av
  
 
 With he same formula for the average salary comparison in February, the result is 'same' since both the department '1' and '2' have the same average salary with the company, which is 7000.
+
+
+Solution with CTE, CASE & AGG function:
+
+WITH avg_CTE AS(
+	SELECT 
+		DATE_FORMAT(pay_date, '%Y-%m') AS Month_Year,
+        AVG(amount) AS Avg_salary
+	FROM salary 
+	GROUP BY MONTH(pay_date)
+) 
+
+SELECT 
+	s.pay_date,
+    d.department_id,
+    (
+	  CASE 	
+		 WHEN (SELECT 1 FROM avg_CTE WHERE avg_CTE.Month_Year = DATE_FORMAT(s.pay_date, '%Y-%m') AND avg_CTE.Avg_salary >  AVG(s.amount)) THEN 'higher'
+                 WHEN (SELECT 1 FROM avg_CTE WHERE avg_CTE.Month_Year = DATE_FORMAT(s.pay_date, '%Y-%m') AND avg_CTE.Avg_salary <  AVG(s.amount)) THEN 'lower'
+                 ELSE 'same'
+	  END
+    ) AS comparison  
+FROM salary s JOIN department d ON s.employee_id = d.employee_id
+GROUP BY MONTH(s.pay_date), d.department_id;
