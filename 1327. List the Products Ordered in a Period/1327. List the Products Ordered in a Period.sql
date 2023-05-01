@@ -80,3 +80,14 @@ Products with product_id = 2 is ordered in February a total of 80.
 Products with product_id = 3 is ordered in February a total of (2 + 3) = 5.
 Products with product_id = 4 was not ordered in February 2020.
 Products with product_id = 5 is ordered in February a total of (50 + 50) = 100.
+
+
+Solution Runtime 1316 ms Beats 41.76% MySQL Submission:
+
+SELECT 
+    p.product_name,
+    SUM(o.unit) AS unit
+FROM products p JOIN Orders o ON p.product_id = o.product_id
+WHERE o.order_date >= '2020-02-01' AND o.order_date <= '2020-02-29'
+GROUP BY p.product_id
+HAVING unit >= 100;
