@@ -29,4 +29,14 @@ Note: Every point is unique, which means there is no duplicates in table point.
 Follow-up: What if all these points have an id and are arranged from the left most to the right most of x axis?
  
 
+Solution with window function:
+
+SELECT 
+	MIN(r.diff) AS shortest 
+FROM (
+	SELECT 
+		x,
+		x - LAG(x) OVER(ORDER BY x) as diff
+	FROM point
+) AS r;
 
