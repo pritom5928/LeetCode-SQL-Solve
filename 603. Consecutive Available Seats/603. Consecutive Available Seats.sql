@@ -25,7 +25,7 @@ Consecutive available seats are more than 2(inclusive) seats consecutively avail
 
 
 
-Naive solution with JOIN :
+Naive solution with JOIN:
 
 SELECT DISTINCT
     a.seat_id
@@ -35,3 +35,16 @@ FROM
     and a.free = true and b.free = true
 ORDER BY a.seat_id
 
+
+Optimal solution with Window function:
+
+SELECT 
+		seat_id 
+FROM (
+		SELECT
+			seat_id,
+			LAG(free) OVER(PARTITION BY free ORDER BY seat_id) AS Frequency
+		FROM Cinema
+		ORDER BY seat_id
+) AS res
+WHERE res.Frequency = 1;
