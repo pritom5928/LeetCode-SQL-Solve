@@ -50,3 +50,21 @@ SELECT
 FROM follow a JOIN follower_CTE b ON a.followee = b.follower
 GROUP BY b.follower
 ORDER BY b.follower;
+
+
+Naive Solution with LEFT Join:
+
+SELECT 
+	follower, 
+	num 
+FROM (
+	    SELECT 
+			f1.follower AS follower, 
+            COUNT(DISTINCT f2.follower) AS num
+        FROM follow f1 LEFT JOIN follow f2
+        ON f1.follower = f2.followee
+        GROUP BY f1.follower
+) AS nums
+WHERE num > 0
+ORDER BY follower;
+
