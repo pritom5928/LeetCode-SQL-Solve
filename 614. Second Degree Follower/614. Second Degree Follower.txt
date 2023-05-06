@@ -35,3 +35,18 @@ Note:
 Followee would not follow himself/herself in all cases.
 
 Please display the result in follower’s alphabet order.
+
+
+Solution with CTE:
+
+WITH follower_CTE AS(
+	SELECT 
+		follower 
+	FROM follow
+)
+SELECT 
+    b.follower,
+    COUNT(*) AS num
+FROM follow a JOIN follower_CTE b ON a.followee = b.follower
+GROUP BY b.follower
+ORDER BY b.follower;
