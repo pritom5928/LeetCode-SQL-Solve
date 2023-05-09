@@ -60,3 +60,45 @@ for ad_id = 3, ctr = (1/(1+1)) * 100 = 50.00
 for ad_id = 5, ctr = 0.00, Note that ad_id = 5 has no clicks or views.
 Note that we don't care about Ignored Ads.
 Result table is ordered by the ctr. in case of a tie we order them by ad_id
+
+
+Naive solution with CTE:
+
+WITH cte AS(
+	 SELECT 
+		*
+	 FROM ads
+	 WHERE action != 'Ignored'
+),
+
+cte2 AS(
+	SELECT 
+		ad_id AS TotalId,
+		COUNT(*) AS Total
+	FROM cte
+	GROUP BY ad_id
+),
+
+cte3 AS(
+	SELECT 
+		ad_id AS ClickId,
+		COUNT(*) AS ClickTotal
+	FROM cte
+	WHERE Action = 'Clicked'
+    GROUP BY ad_id
+)
+
+SELECT 
+	DISTINCT p.ad_id, 
+	IF(s.ctr IS NULL , 0, s.ctr)  AS ctr
+FROM ads p LEFT JOIN 
+(	
+	SELECT 
+		a.totalid ,
+		ROUND((b.ClickTotal / a.Total)*100,2) AS ctr   
+	FROM cte2 a JOIN cte3 b ON a.TotalId = b.ClickId
+	GROUP BY a.totalid
+	ORDER BY ctr DESC, a.totalid ASC
+) AS s 
+ON p.ad_id = s.totalid
+ORDER BY ctr DESC, p.ad_id ASC
