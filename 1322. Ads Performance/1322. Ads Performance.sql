@@ -102,3 +102,20 @@ FROM ads p LEFT JOIN
 ) AS s 
 ON p.ad_id = s.totalid
 ORDER BY ctr DESC, p.ad_id ASC
+
+
+Optimal solution by aggregate function:
+
+SELECT 
+    a.ad_id,
+    IF(b.ctr IS NULL, 0, b.ctr) AS ctr
+FROM ads a LEFT JOIN (
+	SELECT 
+		ad_id,
+		ROUND((SUM(IF(action = 'Clicked',1,0))/COUNT(*))*100,2) AS ctr
+	FROM ads
+	WHERE action != 'Ignored'
+	GROUP BY ad_id
+) AS b ON a.ad_id = b.ad_id
+GROUP BY a.ad_id
+ORDER BY b.ctr DESC, a.ad_id ;
