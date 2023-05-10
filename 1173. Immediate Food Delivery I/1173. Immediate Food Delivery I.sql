@@ -42,3 +42,12 @@ Result table:
 | 33.33                |
 +----------------------+
 The orders with delivery id 2 and 3 are immediate while the others are scheduled.
+
+
+Optimal solution with aggregate function:
+
+SELECT 
+	ROUND(
+		SUM(IF(DATEDIFF(order_date, customer_pref_delivery_date) = 0, 1, 0))/COUNT(*) * 100,2
+        ) AS immediate_percentage
+FROM Delivery;
