@@ -57,4 +57,21 @@ Result table:
 | 1           | 3             |
 | 2           | 1             |
 +-------------+---------------+
-Both employees with id 1 and 3 have the most experience among the employees of the first project. For the second project, the employee with i
+Both employees with id 1 and 3 have the most experience among the employees of the first project. For the second project, the employee with id 1 has the most experience.
+
+
+
+Solution with JOIN : 
+
+SELECT 
+	p.project_id,
+    p.employee_id
+FROM project p JOIN employee e ON p.employee_id = e.employee_id
+WHERE (p.project_id,e.experience_years) in (
+	SELECT 
+		 p.project_id, 
+		 e.experience_years
+	FROM project p JOIN employee e ON p.employee_id = e.employee_id
+	GROUP BY p.project_id
+	HAVING(MAX(e.experience_years))
+)
