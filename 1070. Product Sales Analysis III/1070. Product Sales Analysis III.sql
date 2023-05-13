@@ -67,3 +67,20 @@ Output:
 | 200        | 2011       | 15       | 9000  |
 +------------+------------+----------+-------+
 
+
+
+Solution with aggregate function with 1925 ms Runtime Beats 58.68% MySQL Submission:
+
+SELECT 
+	product_id,
+    year AS first_year,
+    quantity,
+    price
+FROM sales WHERE (product_id, year) IN (
+	SELECT
+		product_id,
+		MIN(year)
+	FROM sales
+	GROUP BY product_id
+	HAVING(MIN(year))
+);
