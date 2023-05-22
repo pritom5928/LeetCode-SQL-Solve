@@ -57,3 +57,7 @@ The mail of user 6 does not have the leetcode domain.
 The mail of user 7 starts with a period.
 
 
+Solution with Runtime 1473 ms that beats 53.79%
+
+SELECT * FROM users
+WHERE mail REGEXP '^[a-zA-Z][a-zA-Z0-9._-]*@leetcode\\.com'
