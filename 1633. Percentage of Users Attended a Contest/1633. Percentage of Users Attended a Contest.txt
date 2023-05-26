@@ -1,6 +1,6 @@
 1633. Percentage of Users Attended a Contest
-Easy
 
+Easy
 SQL Schema
 Table: Users
 
@@ -77,3 +77,17 @@ All the users registered in contests 208, 209, and 210. The percentage is 100% a
 Alice and Alex registered in contest 215 and the percentage is ((2/3) * 100) = 66.67%
 Bob registered in contest 207 and the percentage is ((1/3) * 100) = 33.33%
 
+
+Solution with Aggregate function Runtime 1417 ms Beats MySQL 97.93% Submission:
+
+WITH CTE AS (
+	SELECT 
+		COUNT(*) AS  TotalUser
+	FROM Users
+)
+SELECT 
+	contest_id,
+    ROUND((COUNT(user_id) / (SELECT TotalUser FROM CTE)) * 100, 2) AS percentage
+FROM Register
+GROUP BY contest_id
+ORDER BY percentage DESC, contest_id;
