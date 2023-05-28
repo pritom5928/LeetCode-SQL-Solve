@@ -58,3 +58,17 @@ Explanation: The folowing table is ordered by the turn for simplicity.
 | 5    | 4  | Bob       | 175    | ___          |
 | 6    | 1  | Winston   | 500    | ___          |
 +------+----+-----------+--------+--------------+
+
+
+
+Solution with Runtime 1574 ms that Beats 65.19% MySQL Submissions:
+
+SELECT 
+	person_name
+FROM (
+	SELECT 
+		person_name, SUM(weight) OVER(ORDER BY turn) AS Sum
+	FROM queue
+) AS Res
+WHERE Sum <= 1000
+ORDER BY Sum DESC LIMIT 1;
