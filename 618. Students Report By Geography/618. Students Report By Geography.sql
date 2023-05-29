@@ -23,3 +23,30 @@ For the sample input, the output is:
  
 
 Follow-up: If it is unknown which continent has the most students, can you write a query to generate the student report?
+
+
+Solution with window function:
+
+SELECT 
+     MAX(
+		CASE 
+			WHEN continent = 'America' THEN name 
+		END
+	 ) AS America,
+     MAX(
+		CASE 
+			WHEN continent = 'Asia' THEN name 
+		END
+	 ) AS Asia,
+     MAX(
+		CASE 
+			WHEN continent = 'Europe' THEN name 
+		END
+	 ) AS Europe
+FROM (
+	SELECT  
+		*, ROW_NUMBER() OVER(PARTITION BY continent) AS grp
+	FROM student
+) AS t
+GROUP BY grp
+ORDER BY grp;
