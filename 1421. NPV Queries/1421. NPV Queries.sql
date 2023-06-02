@@ -76,3 +76,11 @@ Result table:
 
 The npv value of (7, 2018) is not present in the NPV table, we consider it 0.
 The npv values of all other queries can be found in the NPV table.
+
+
+Solution with simple left join:
+SELECT 
+	q.id,
+    q.year,
+    IF(n.npv IS NULL, 0, n.npv) AS npv
+FROM queries q LEFT JOIN npv n ON (q.id, q.year ) = (n.id, n.year)
