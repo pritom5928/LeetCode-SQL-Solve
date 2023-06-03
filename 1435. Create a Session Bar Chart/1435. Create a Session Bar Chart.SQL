@@ -48,3 +48,33 @@ There are no session with a duration greater or equial than 10 minutes and less 
 For session_id 5 has a duration greater or equal than 15 minutes.
 
 
+Solution with UNION & CTE:
+
+WITH CTE AS(
+	SELECT 
+		*
+	FROM Sessions
+)
+SELECT 
+	'[0-5>' AS bin,
+    COUNT(duration) AS total
+FROM CTE
+WHERE ROUND(duration/60, 2) >= 0 AND ROUND(duration/60, 2)<5
+UNION
+SELECT 
+	'[5-10>' AS bin,
+    COUNT(duration) AS total
+FROM CTE
+WHERE ROUND(duration/60, 2) >= 5 AND ROUND(duration/60, 2)<10
+UNION
+SELECT 
+	'[10-15>' AS bin,
+    COUNT(duration) AS total
+FROM CTE
+WHERE ROUND(duration/60, 2) >= 10 AND ROUND(duration/60, 2)<15
+UNION
+SELECT 
+	'15 or more' AS bin,
+    COUNT(duration) AS total
+FROM CTE
+WHERE ROUND(duration/60, 2) >= 15;
