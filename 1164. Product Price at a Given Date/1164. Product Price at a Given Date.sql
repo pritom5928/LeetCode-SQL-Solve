@@ -52,11 +52,11 @@ Output:
 Naive solution with Correlated subquery with Runtime 2463 ms beats 5.4% MySQL Online submission:
 
 SELECT 
-	DISTINCT a.product_id,
+    DISTINCT a.product_id,
     IF(b.new_price IS NULL, 10, b.new_price) AS price
 FROM products a LEFT JOIN (
 	SELECT 
-		p.product_id,
+	p.product_id,
         p.new_price
     FROM products p 
 	WHERE p.change_date >= (
@@ -64,6 +64,28 @@ FROM products a LEFT JOIN (
 			MAX(p1.change_date) 
 		FROM products p1
 		WHERE p1.product_id = p.product_id and p1.change_date <= '2019-08-16'
-    )
-	AND p.change_date <= '2019-08-16'
+    ) AND p.change_date <= '2019-08-16'
 ) AS b ON a.product_id = b.product_id;
+
+
+
+More optimal solution with JOIN with Runtime 994 ms Beats 38.70% MySQL Online submission:
+
+SELECT 
+     product_id, 
+     10 AS price
+FROM Products
+GROUP BY product_id
+HAVING (MIN(change_date) > '2019-08-16')
+UNION
+SELECT
+	product_id,
+    new_price AS price
+FROM products WHERE (product_id, change_date) IN (
+	SELECT 
+		product_id,
+        MAX(change_date) AS change_date
+	FROM Products
+	WHERE change_date <= '2019-08-16'
+	GROUP BY product_id
+) ;
