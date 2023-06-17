@@ -82,3 +82,18 @@ Average weather_state in Peru in November is (25) / 1 = 25 so weather type is Ho
 Average weather_state in China in November is (16 + 18 + 21) / 3 = 18.333 so weather type is Warm.
 Average weather_state in Morocco in November is (25 + 27 + 31) / 3 = 27.667 so weather type is Hot.
 We know nothing about average weather_state in Spain in November so we don't include it in the result table.
+
+
+
+Solution with simple join & aggregate function in MySQL:
+
+SELECT 
+	country_name,
+    (CASE 
+		WHEN AVG(w.weather_state) <= 15 THEN 'Cold'
+        WHEN AVG(w.weather_state) >= 25 THEN 'Hot'
+        ELSE 'Warm'
+	END) AS weather_type
+FROM Countries c JOIN Weather w ON c.country_id = w.country_id
+WHERE EXTRACT(YEAR_MONTH FROM w.day) = '201911'
+GROUP BY c.country_id
