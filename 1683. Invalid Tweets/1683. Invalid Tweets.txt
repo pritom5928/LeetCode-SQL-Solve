@@ -43,3 +43,11 @@ Output:
 Explanation: 
 Tweet 1 has length = 14. It is a valid tweet.
 Tweet 2 has length = 32. It is an invalid tweet.
+
+
+Solution with Legnth() having Runtime 1440 ms beats Beats 26.24% MySQL Submission:
+
+SELECT 
+    tweet_id
+FROM Tweets
+WHERE LENGTH(content) > 15 
