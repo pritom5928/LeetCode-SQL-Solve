@@ -51,3 +51,11 @@ SELECT
     tweet_id
 FROM Tweets
 WHERE LENGTH(content) > 15 
+
+
+Solution with CHAR_LENGTH() having Runtime 1318 ms beats Beats 47.67% MySQL Submission:
+
+SELECT 
+    tweet_id
+FROM Tweets
+WHERE CHAR_LENGTH(content) > 15 
