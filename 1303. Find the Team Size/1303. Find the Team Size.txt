@@ -60,3 +60,12 @@ SELECT
 	e1.employee_id,
     e2.Total AS team_size
 FROM employee e1 JOIN Grp_CTE e2 ON e1.team_id = e2.team_id;
+
+
+Simple & Optimal solution by Window function in MySQL:
+
+SELECT 
+    employee_id,
+    COUNT(team_id) OVER(PARTITION BY team_id) AS team_size  
+FROM employee
+ORDER BY employee_id;
