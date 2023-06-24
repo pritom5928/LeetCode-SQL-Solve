@@ -44,3 +44,18 @@ Result table:
 Employees with Id 1,2,3 are part of a team with team_id = 8.
 Employees with Id 4 is part of a team with team_id = 7.
 Employees with Id 5,6 are part of a team with team_id = 9.
+
+
+Naive Solution with Agg() and JOIN in MySQL:
+
+WITH Grp_CTE AS(
+	SELECT 
+		team_id,
+        COUNT(*) AS Total
+    FROM employee
+    GROUP BY team_id
+)
+SELECT 
+	e1.employee_id,
+    e2.Total AS team_size
+FROM employee e1 JOIN Grp_CTE e2 ON e1.team_id = e2.team_id;
