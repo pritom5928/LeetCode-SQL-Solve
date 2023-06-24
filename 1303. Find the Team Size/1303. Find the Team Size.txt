@@ -46,7 +46,8 @@ Employees with Id 4 is part of a team with team_id = 7.
 Employees with Id 5,6 are part of a team with team_id = 9.
 
 
-Naive Solution with Agg() and JOIN in MySQL:
+
+Naive Solution with CTE & Agg() & JOIN in MySQL:
 
 WITH Grp_CTE AS(
 	SELECT 
