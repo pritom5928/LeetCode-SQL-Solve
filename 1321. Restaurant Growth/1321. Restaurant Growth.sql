@@ -63,3 +63,12 @@ Explanation:
 4th moving average from 2019-01-04 to 2019-01-10 has an average_amount of (130 + 110 + 140 + 150 + 80 + 110 + 130 + 150)/7 = 142.86
 
 
+Solution with window function Runtime 595 ms Beats 95.69% MySQL submisson:
+
+select 
+    visited_on,
+    sum(sum(amount)) over(order by visited_on rows between 6 preceding and current row) as amount,
+    round(avg(sum(amount)) over(order by visited_on rows between 6 preceding and current row), 2) as average_amount
+from customer
+group by visited_on
+limit 6, 10000;
