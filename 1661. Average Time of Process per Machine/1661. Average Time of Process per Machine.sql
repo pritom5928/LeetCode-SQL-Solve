@@ -68,3 +68,20 @@ There are 3 machines running 2 processes each.
 Machine 0's average time is ((1.520 - 0.712) + (4.120 - 3.140)) / 2 = 0.894
 Machine 1's average time is ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
 Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
+
+
+
+solution with Runtime 453 ms Beats 66.69% MySQL submission:
+
+SELECT 
+    res.machine_id,
+    ROUND(AVG(res.timediff), 3) AS processing_time
+FROM (
+	SELECT 
+		machine_id, 
+		process_id,
+		MAX(timestamp) - MIN(timestamp) AS timediff
+	FROM activity
+	GROUP BY machine_id, process_id
+) AS res
+GROUP BY res.machine_id;
