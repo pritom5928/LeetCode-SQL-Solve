@@ -48,3 +48,14 @@ Output:
 +-------------+-------+---------------+-------------+
 Explanation: Hercy has 2 people report directly to him, Alice and Bob. Their average age is (41+36)/2 = 38.5, which is 39 after rounding it to the nearest integer.
 
+
+Mysql Solution Runtime 987ms Beats 94.03% of users with MySQL:
+
+select 
+	e1.employee_id,
+    e1.name,
+    count(*) as reports_count ,
+    round(avg(e2.age)) as average_age 
+from Employees e1 join Employees e2 on e1.employee_id = e2.reports_to
+group by e1.employee_id
+order by e1.employee_id
