@@ -75,7 +75,7 @@ User 7 made 3 requests and all were confirmed. The confirmation rate is 1.
 User 2 made 2 requests where one was confirmed and the other timed out. The confirmation rate is 1 / 2 = 0.5.
 
 
-1. Naive soluiton by CTE, GROUP BY & LEFT JOIN with Runtime 837ms (Beats 13.58%):
+1. Naive solution by CTE, GROUP BY & LEFT JOIN with Runtime 837ms (Beats 13.58%):
 
 WITH CTE AS (
     SELECT 
@@ -91,4 +91,20 @@ SELECT
     ROUND(c.ConfirmedAmount / c.Total, 2) AS Confirmation_Rate
 FROM CTE AS c;
 
+
+2. Optimal solution by LEFT JOIN with Runtime 568 ms (Beats 79.88%)
+
+
+SELECT 
+    s.user_id,
+    ROUND(
+        SUM(IF(c.action = 'confirmed', 1, 0)) / COUNT(1), 
+        2
+    ) AS confirmation_rate  
+FROM 
+    signups s 
+LEFT JOIN 
+    confirmations c ON s.user_id = c.user_id
+GROUP BY 
+    s.user_id;
 
