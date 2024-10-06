@@ -73,11 +73,21 @@ From sale_id = 7, we can conclude that Apple was sold for 9000 in the year 2011.
 
 
 
-solution Runtime 2365 ms beats 27.56% MySQL Submission:
+1. solution with LEFT JOIN Runtime 2365 ms beats 27.56% MySQL Submission:
 
 SELECT 
      p.product_name,
      s.year,
      s.price
 FROM Sales AS s LEFT JOIN Product AS p
-ON s.product_id  = p.product_id
+ON s.product_id  = p.product_id;
+
+
+2. solution with INNER JOIN Runtime 1230 ms Beats 56.71% MySQL Submission:
+SELECT 
+    p.product_name,
+    s.year,
+    s.price
+FROM product p JOIN sales s 
+ON p.product_id = s.product_id;
+
