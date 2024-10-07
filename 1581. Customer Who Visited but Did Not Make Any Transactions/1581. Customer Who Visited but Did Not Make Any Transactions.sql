@@ -106,4 +106,13 @@ select
 from visits v left join transactions t on v.visit_id = t.visit_id
 where t.visit_id is null
 group by v.customer_id;
+
+
+solution with window function that omiting group by  Runtime 1203 ms beats Beats 68.69% submission:
+
+SELECT 
+    DISTINCT(v.customer_id),
+    COUNT(1) OVER (PARTITION BY v.customer_id) AS count_no_trans
+FROM visits v LEFT JOIN  transactions t ON v.visit_id = t.visit_id
+WHERE t.transaction_id IS NULL;
 	
