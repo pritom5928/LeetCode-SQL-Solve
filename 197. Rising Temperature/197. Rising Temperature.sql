@@ -47,13 +47,17 @@ In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
 In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
 
 
-Naive Solution: 
+1. Naive Solution with correlated sub-query with TC=> Runtime 1016ms (Beats 7.89%) and SC=> O(N^2): 
 
 SELECT 
-	w1.id 
-FROM Weather w1, Weather w2
-WHERE 
-	w1.temperature > w2.temperature AND DATEDIFF(w1.recorddate, w2.recorddate) = 1;
+    id
+FROM weather w
+WHERE w.temperature > (
+        SELECT 
+            w1.temperature
+        FROM weather w1
+        WHERE DATE_SUB(w.recorddate, INTERVAL 1 DAY) = w1.recorddate
+    );
 
 
 Optimal Solution:
