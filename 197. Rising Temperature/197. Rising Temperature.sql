@@ -60,10 +60,10 @@ WHERE w.temperature > (
     );
 
 
-Optimal Solution:
+2. Optimal Solution with CROSS JOIN with TC=> Runtime 467ms (Beats 42.02%) and SC=> O(N^2):
 
 SELECT 
 	w1.id 
 FROM Weather w1, Weather w2 
-WHERE 
-        w1.Temperature > w2.Temperature AND w1.RecordDate = w2.recorddate + interval 1 day;
+WHERE w1.Temperature > w2.Temperature 
+    AND DATEDIFF(w1.recorddate, w2.recorddate) = 1;
