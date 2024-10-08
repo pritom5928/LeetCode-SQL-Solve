@@ -47,7 +47,7 @@ In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
 In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
 
 
-1. Naive Solution with correlated sub-query with TC=> Runtime 1016ms (Beats 7.89%) and SC=> O(N^2): 
+1. Naive Solution with correlated sub-query with TC O(N^2) => Runtime 1016ms (Beats 7.89%) and SC=> O(1): 
 
 SELECT 
     id
@@ -60,10 +60,23 @@ WHERE w.temperature > (
     );
 
 
-2. Optimal Solution with CROSS JOIN with TC=> Runtime 467ms (Beats 42.02%) and SC=> O(N^2):
+2. Optimal Solution with CROSS JOIN with TC O(N^2)=> Runtime 467ms (Beats 42.02%) and SC=> O(N^2):
 
 SELECT 
 	w1.id 
 FROM Weather w1, Weather w2 
 WHERE w1.Temperature > w2.Temperature 
     AND DATEDIFF(w1.recorddate, w2.recorddate) = 1;
+	
+3. Super Optimal solution with Window function & CTE with TC O(n log n)=> Runtime 320ms (Beats 93.69%) and SC=> O(N):
+WITH cte AS (
+    SELECT 
+        w.*, 
+        LAG(recorddate) OVER (ORDER BY recorddate) AS prev_date, 
+        LAG(temperature) OVER (ORDER BY recorddate) AS prev_temp
+    FROM  weather w
+)
+SELECT 
+    id
+FROM cte c
+WHERE DATEDIFF(c.recorddate, c.prev_date) = 1 AND c.temperature > c.prev_temp;
