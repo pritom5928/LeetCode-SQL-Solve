@@ -52,3 +52,16 @@ Teacher 2:
   - They teach subject 2 in department 1.
   - They teach subject 3 in department 1.
   - They teach subject 4 in department 1.
+  
+  
+  
+1. Optimal solution by GROUP by Runtime 437ms Beats 93.65% submission:
+
+SELECT 
+    teacher_id,
+    COUNT(DISTINCT subject_id) AS cnt
+FROM teacher
+GROUP BY teacher_id;
+
+
+
