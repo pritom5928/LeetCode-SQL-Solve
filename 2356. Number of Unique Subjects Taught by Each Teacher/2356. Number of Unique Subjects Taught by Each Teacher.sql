@@ -64,4 +64,18 @@ FROM teacher
 GROUP BY teacher_id;
 
 
+2. Another solution by Window function, CTE & GROUP by Runtime 471ms Beats 77.53% submission:
 
+WITH unique_sub AS (
+    SELECT 
+        teacher_id,
+        subject_id,
+        ROW_NUMBER() OVER (PARTITION BY teacher_id, subject_id) AS rownum
+    FROM teacher
+)
+SELECT 
+    u.teacher_id,
+    COUNT(1) AS cnt
+FROM unique_sub u
+WHERE u.rownum < 2
+GROUP BY u.teacher_id;
