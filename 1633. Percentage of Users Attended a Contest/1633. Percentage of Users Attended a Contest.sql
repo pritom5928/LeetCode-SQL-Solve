@@ -78,7 +78,7 @@ Alice and Alex registered in contest 215 and the percentage is ((2/3) * 100) = 6
 Bob registered in contest 207 and the percentage is ((1/3) * 100) = 33.33%
 
 
-Solution with Aggregate function Runtime 1417 ms Beats 97.93% MySQL Submission:
+1. Solution with Aggregate function Runtime 1417 ms Beats 97.93% MySQL Submission:
 
 WITH CTE AS (
 	SELECT 
@@ -95,7 +95,7 @@ ORDER BY percentage DESC, contest_id;
 
 
 
-Optimal solution with Window function Runtime 1555 ms Beats 90.22% MySQL Submission:
+2. Optimal solution with Window function Runtime 1555 ms Beats 90.22% MySQL Submission:
 
 WITH CTE AS (
 	SELECT 
@@ -108,3 +108,18 @@ SELECT
 	ROUND( (COUNT(*) OVER(PARTITION BY contest_id) / (SELECT TotalUser FROM CTE)) * 100, 2) AS  percentage
 FROM  Register
 ORDER BY percentage DESC, contest_id;
+
+
+3. Another solution by JOIN & Subquery Runtime 934 ms (Beats 62.66%) MySQL Submission:
+
+SELECT 
+    DISTINCT r.contest_id,
+    ROUND(
+        COUNT(u.user_id) OVER (PARTITION BY r.contest_id) 
+        / (SELECT COUNT(DISTINCT user_id) FROM users) * 100, 
+    2) AS percentage 
+FROM users u 
+LEFT JOIN register r 
+    ON u.user_id = r.user_id
+WHERE r.contest_id IS NOT NULL
+ORDER BY percentage DESC, r.contest_id ASC;
