@@ -59,7 +59,7 @@ Explanation: Note that we do not care about days with zero active users.
 
 
 
-solution with 810 ms runtime that beats 46.44% beats mysql submission:
+1. solution with 810 ms runtime that beats 46.44% beats mysql submission:
 
 
 select 
@@ -69,3 +69,20 @@ from Activity
  where (activity_date >"2019-06-27" and activity_date <="2019-07-27")
   group by activity_date;
 
+
+2. Solution of Window Function Runtime 502ms (Beats 42.46%) mysql submission:
+
+SELECT 
+    day,
+    COUNT(rnk) AS active_users
+FROM (
+    SELECT 
+        activity_date AS day,
+        user_id,
+        ROW_NUMBER() OVER (PARTITION BY activity_date, user_id) AS rnk 
+    FROM activity
+    WHERE DATEDIFF('2019-07-28', activity_date) <= 30 
+      AND DATEDIFF('2019-07-28', activity_date) >= 0
+) AS e
+WHERE e.rnk = 1
+GROUP BY day;
