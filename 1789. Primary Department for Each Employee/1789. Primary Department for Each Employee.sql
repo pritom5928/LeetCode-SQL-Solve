@@ -101,3 +101,20 @@ Time Complexity: O(n log n)
 Space Complexity: O(n)
 The partitioning and sorting (in the ROW_NUMBER() function) dominates the time complexity: O(n log n)
 
+3. Solution with Correlated SubQuery that Runtime 569ms (Beats 32.63%)
+
+SELECT 
+    e1.employee_id,
+    e1.department_id
+FROM employee e1
+WHERE e1.primary_flag = 'Y'
+OR 
+    e1.primary_flag = 'N' AND NOT EXISTS (
+        SELECT 
+			1 
+        FROM employee e2
+        WHERE e2.employee_id = e1.employee_id AND e2.primary_flag = 'Y'
+);
+
+Time Complexity: O(n²) (due to the correlated subquery for each row).
+Space Complexity: O(n) (due to handling the rows in memory).
