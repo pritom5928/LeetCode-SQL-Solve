@@ -58,7 +58,7 @@ Explanation:
 - The Primary department for employee 4 is 3.
 
 
-1. Solution with GROUP BY & LEFT JOIN Runtime that Runtime 473ms (Beats 79.83%)
+1. Solution with GROUP BY & LEFT JOIN that Runtime 473ms (Beats 79.83%)
 
 SELECT 
     e1.employee_id,
@@ -81,3 +81,23 @@ GROUP BY e1.employee_id;
 Time Complexity: O(n log n)
 Space Complexity: O(n)
 Both time and space complexity are efficient, with the bottleneck being the GROUP BY operation which incurs an O(n log n) time complexity.
+
+
+2. Solution with WINDOW FUNCTION that Runtime 503ms (Beats 63.54%)
+
+SELECT 
+    a.employee_id,
+    a.department_id
+FROM (
+    SELECT 
+        e.employee_id,
+        e.department_id,
+        ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY primary_flag) AS rn
+    FROM employee e
+) a 
+WHERE a.rn = 1;
+
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+The partitioning and sorting (in the ROW_NUMBER() function) dominates the time complexity: O(n log n)
+
