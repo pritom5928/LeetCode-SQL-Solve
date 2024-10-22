@@ -1,4 +1,4 @@
-
+1789. Primary Department for Each Employee
 Table: Employee
 
 +---------------+---------+
@@ -56,3 +56,28 @@ Explanation:
 - The Primary department for employee 2 is 1.
 - The Primary department for employee 3 is 3.
 - The Primary department for employee 4 is 3.
+
+
+1. Solution with GROUP BY & LEFT JOIN Runtime that Runtime 473ms (Beats 79.83%)
+
+SELECT 
+    e1.employee_id,
+    (
+        CASE
+            WHEN e2.primary_flag IS NULL THEN e1.department_id
+            WHEN e2.primary_flag IS NOT NULL AND e2.primary_flag = 'Y' THEN e2.department_id
+        END
+    ) AS department_id
+FROM employee e1
+LEFT JOIN (
+    SELECT 
+        * 
+    FROM employee
+    WHERE primary_flag = 'Y'
+) AS e2 
+ON e1.employee_id = e2.employee_id
+GROUP BY e1.employee_id;
+
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+Both time and space complexity are efficient, with the bottleneck being the GROUP BY operation which incurs an O(n log n) time complexity.
