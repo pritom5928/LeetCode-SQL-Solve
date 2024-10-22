@@ -71,7 +71,7 @@ Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
 
 
 
-solution with Runtime 453 ms Beats 66.69% MySQL submission:
+1. Solution with Runtime 453 ms Beats 66.69% MySQL submission:
 
 SELECT 
     res.machine_id,
@@ -85,3 +85,23 @@ FROM (
 	GROUP BY machine_id, process_id
 ) AS res
 GROUP BY res.machine_id;
+
+
+2. solution with Runtime 207 ms Beats 68.60% MySQL submission:
+
+SELECT 
+    s.machine_id,
+    ROUND(SUM(val) / COUNT(1), 3) AS processing_time
+FROM (
+    SELECT 
+        machine_id,
+        (LAST_VALUE(timestamp) OVER w - FIRST_VALUE(timestamp) OVER w) AS val,
+        ROW_NUMBER() OVER (PARTITION BY machine_id, process_id ORDER BY activity_type) AS rn
+    FROM activity
+    WINDOW w AS (PARTITION BY machine_id, process_id ORDER BY activity_type)
+) s
+WHERE s.rn = 2
+GROUP BY s.machine_id;
+
+
+
