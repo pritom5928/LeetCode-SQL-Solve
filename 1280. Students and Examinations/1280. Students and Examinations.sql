@@ -108,7 +108,7 @@ John attended the Math exam 1 time, the Physics exam 1 time, and the Programming
 
 
 
-Solution with Cross Join in MySQL with 1625 ms runtime beats 62.45% MySQL Submisisons:
+1. Solution with Cross Join in MySQL with 1625 ms runtime beats 62.45% MySQL Submisisons:
 
 SELECT 
 	s.student_id,
@@ -118,4 +118,20 @@ SELECT
 FROM Students s CROSS JOIN Subjects sub
 LEFT JOIN Examinations e ON s.student_id = e.student_id AND sub.subject_name = e.subject_name
 GROUP BY s.student_id, s.student_name, sub.subject_name
+ORDER BY s.student_id, sub.subject_name;
+
+
+2. Solution by Correlated Subquery with 999 ms runtime beats 27.01% MySQL Submisisons:
+
+SELECT 
+    s.student_id, 
+    s.student_name, 
+    sub.subject_name, 
+    (
+        SELECT COUNT(1) 
+        FROM examinations e 
+        WHERE e.student_id = s.student_id 
+          AND e.subject_name = sub.subject_name
+    ) AS attended_exams
+FROM students s, subjects sub
 ORDER BY s.student_id, sub.subject_name;
