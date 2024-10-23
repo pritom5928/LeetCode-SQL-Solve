@@ -48,7 +48,7 @@ The followers of 1 are {0}
 The followers of 2 are {0,1}
 
 
-Solution Runtime 1202 ms beats 24.41% MySQL Submisison:
+1. Solution by GROUP BY that Runtime 1202 ms beats 24.41% MySQL Submisison:
 
 SELECT 
   user_id,
@@ -57,10 +57,21 @@ FROM Followers
 GROUP BY User_id
 ORDER BY User_id;
 
-Solution Runtime 992 ms beats 76.11% MySQL Submission:
+2. Solution by Window Function that Runtime 992 ms beats 76.11% MySQL Submission:
 
 SELECT 
   DISTINCT user_id,
   COUNT(*) OVER(PARTITION BY  User_id) AS followers_count
 FROM Followers
 ORDER BY User_id;
+
+3. Solution by Correlated Subquery that Runtime 742 ms beats 11.52% MySQL Submission:
+
+SELECT 
+    DISTINCT f.user_id,
+    (SELECT COUNT(*) 
+     FROM followers f1 
+     WHERE f.user_id = f1.user_id) AS followers_count
+FROM followers f
+ORDER BY f.user_id;
+
