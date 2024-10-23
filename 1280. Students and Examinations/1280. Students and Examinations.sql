@@ -135,3 +135,23 @@ SELECT
     ) AS attended_exams
 FROM students s, subjects sub
 ORDER BY s.student_id, sub.subject_name;
+
+3. Solution by Window function with 873 ms Runtime beats 51.87% MySQL Submisisons:
+
+SELECT 
+    * 
+FROM (
+    SELECT 
+        s.student_id,
+        s.student_name,
+        sub.subject_name,
+        SUM(IF(e.subject_name IS NULL, 0, 1)) OVER w AS attended_exams
+    FROM Students s 
+    CROSS JOIN Subjects sub
+    LEFT JOIN Examinations e 
+        ON s.student_id = e.student_id 
+        AND sub.subject_name = e.subject_name
+    WINDOW w AS (PARTITION BY s.student_id, sub.subject_name ORDER BY s.student_id, sub.subject_name)
+) res
+GROUP BY res.student_id, res.subject_name;
+
