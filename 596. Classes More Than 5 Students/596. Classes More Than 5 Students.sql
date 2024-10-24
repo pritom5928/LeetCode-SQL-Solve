@@ -54,6 +54,20 @@ Explanation:
 
 1. Solution with GROUP BY & HAVING clause with Runtime 306 ms that beats 63.93% of MySQL submission:
 
-SELECT Class FROM Courses 
-GROUP BY Class
-HAVING COUNT(*)>=5;
+SELECT 
+    class
+FROM  Courses
+GROUP BY class
+HAVING COUNT(1) >= 5;
+
+2. Solution with Window function with Runtime 314 ms that beats 56.77% of MySQL submission:
+
+SELECT 
+    DISTINCT class
+FROM (
+    SELECT 
+        class, 
+        COUNT(1) OVER (PARTITION BY class) AS frequency
+    FROM Courses
+) res
+WHERE res.frequency >= 5;
