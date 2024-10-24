@@ -52,7 +52,7 @@ Explanation:
 - Computer has 1 student, so we do not include it.
 
 
-1. Solution with GROUP BY & HAVING clause with Runtime 306 ms that beats 63.93% of MySQL submission:
+1. Solution by GROUP BY & HAVING clause with Runtime 306 ms that beats 63.93% of MySQL submission:
 
 SELECT 
     class
@@ -60,7 +60,7 @@ FROM  Courses
 GROUP BY class
 HAVING COUNT(1) >= 5;
 
-2. Solution with Window function with Runtime 314 ms that beats 56.77% of MySQL submission:
+2. Solution by Window function with Runtime 314 ms that beats 56.77% of MySQL submission:
 
 SELECT 
     DISTINCT class
@@ -71,3 +71,17 @@ FROM (
     FROM Courses
 ) res
 WHERE res.frequency >= 5;
+
+
+3. Solution by Correlated Subquery with Runtime 2158 ms that beats 5.02% of MySQL submission
+
+SELECT 
+    DISTINCT c.class
+FROM Courses c
+WHERE 5 <= (
+        SELECT 
+            COUNT(1) 
+        FROM Courses c1 
+        WHERE  c.class = c1.class 
+        GROUP BY c1.class
+    );
