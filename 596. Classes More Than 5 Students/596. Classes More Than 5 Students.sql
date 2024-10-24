@@ -52,7 +52,7 @@ Explanation:
 - Computer has 1 student, so we do not include it.
 
 
-Solution that beat 60.74% of MySQL submission:
+1. Solution with GROUP BY & HAVING clause with Runtime 306 ms that beats 63.93% of MySQL submission:
 
 SELECT Class FROM Courses 
 GROUP BY Class
