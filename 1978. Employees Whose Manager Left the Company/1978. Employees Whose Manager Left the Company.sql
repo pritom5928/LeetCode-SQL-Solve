@@ -48,3 +48,22 @@ Explanation:
 The employees with a salary less than $30000 are 1 (Kalel) and 11 (Joziah).
 Kalel's manager is employee 11, who is still in the company (Joziah).
 Joziah's manager is employee 6, who left the company because there is no row for employee 6 as it was deleted.
+
+
+1. Naive solution by Subquery with Runtime 323 ms (Beats 58.47%)
+
+SELECT 
+    employee_id
+FROM employees
+WHERE salary < 30000 
+    AND manager_id NOT IN (
+        SELECT 
+            employee_id 
+        FROM employees
+    )
+ORDER BY employee_id ASC;
+
+TC: O(N^2)
+SC: O(N)
+
+
