@@ -66,4 +66,20 @@ ORDER BY employee_id ASC;
 TC: O(N^2)
 SC: O(N)
 
+2. Another solution by Correlated Subquery with Runtime 345 ms (Beats 40.73%)	
 
+SELECT 
+    e1.employee_id 
+FROM employees e1 
+WHERE EXISTS (
+        SELECT 
+            * 
+        FROM employees e2 
+        WHERE e1.manager_id = e2.manager_id 
+            AND e1.salary < 30000 
+            AND e2.manager_id NOT IN (SELECT employee_id FROM employees)
+)
+ORDER BY e1.employee_id;
+
+TC: O(N^2)
+SC: O(N)
