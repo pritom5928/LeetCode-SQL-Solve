@@ -81,5 +81,19 @@ WHERE EXISTS (
 )
 ORDER BY e1.employee_id;
 
-TC: O(N^2)
+TC: O(N^3)
+SC: O(N)
+
+3. Optimal solution by LEFT JOIN with Runtime 292 ms (Beats 85.97%)
+
+SELECT 
+    e.employee_id
+FROM employees e
+left JOIN employees m ON e.manager_id is not null and e.manager_id = m.employee_id
+WHERE e.salary < 30000
+  AND e.manager_id  IS NOT NULL
+  AND m.employee_id IS NULL
+ORDER BY e.employee_id ASC;
+
+TC: O(NlogN)
 SC: O(N)
