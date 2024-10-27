@@ -82,7 +82,8 @@ FROM Queries a LEFT JOIN CTE b
 ON a.query_name = b.QueryName
 GROUP BY a.query_name;
 
-
+Time Complexity: O(nlogn)
+Space Complexity: O(g) where g < n; n = number of rows
 
 2. Solution with AVG clause Runtime 1565 ms Beats 11.51%: 
 
@@ -93,6 +94,8 @@ SELECT
 FROM queries
 GROUP BY query_name;
 
+Time Complexity: O(nlogn)
+Space Complexity: O(g) where g < n; n = number of rows
 
 3. Solution by window function Runtime 399 ms Beats 55.59%: 
 
