@@ -60,6 +60,9 @@ WITH At_Least_5_CTE AS
 
 SELECT a.name FROM employee a JOIN At_Least_5_CTE b ON a.id = b.ManagerId; 
 
+Time Complexity: O(N)
+Space Complexity: O(M+N)
+
 2. Solution with Correlated Subquery Runtime 2277 ms & beats 5.01% MySQL online submissions:
 
 SELECT 
@@ -72,6 +75,8 @@ WHERE 5 <= (
         WHERE e.id = e1.managerid
 );
 
+Time Complexity : O(N^2)
+Space Complexity: O(1)
 
 3. Solution with join Runtime 349 ms & beats 80.55% MySQL online submissions:
 
@@ -81,3 +86,6 @@ FROM employee e
 JOIN employee e1 ON e.id = e1.managerid
 GROUP BY e.id
 HAVING COUNT(*) >= 5;
+
+Time Complexity : O(N×M)
+Space Complexity: O(N×M)
