@@ -47,7 +47,7 @@ Output:
 | John |
 +------+
 
-Solution with simple JOIN & Agg() with 479 ms runtime & beats 83.47% MySQL online submisisons:
+1. Solution with simple JOIN & Agg() with 479 ms runtime & beats 83.47% MySQL online submissions:
 
 WITH At_Least_5_CTE AS
 (
@@ -59,3 +59,15 @@ WITH At_Least_5_CTE AS
 )
 
 SELECT a.name FROM employee a JOIN At_Least_5_CTE b ON a.id = b.ManagerId; 
+
+2. Solution with Correlated Subquery Runtime 2277 ms & beats 5.01% MySQL online submissions:
+
+SELECT 
+    e.name 
+FROM employee e
+WHERE 5 <= (
+        SELECT 
+            COUNT(*) 
+        FROM employee e1 
+        WHERE e.id = e1.managerid
+);
