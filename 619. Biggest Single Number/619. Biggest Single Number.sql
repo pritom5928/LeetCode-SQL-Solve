@@ -95,3 +95,23 @@ WITH UniqueNums AS (
 SELECT 
     MAX(num) AS num
 FROM UniqueNums;
+
+3. Solution by Correlated subquery Runtime 432 ms Beats 63.80% MySQL Submissions:
+
+SELECT 
+    m.*
+FROM mynumbers m
+WHERE 
+    1 = (SELECT COUNT(*) FROM mynumbers p WHERE m.num = p.num)
+    AND 
+    m.num = (
+        SELECT 
+			MAX(p.num) 
+        FROM mynumbers p 
+        WHERE (SELECT COUNT(1) FROM mynumbers q WHERE p.num = q.num) = 1
+    )
+UNION ALL
+SELECT 
+    NULL AS num  
+LIMIT 1;
+
