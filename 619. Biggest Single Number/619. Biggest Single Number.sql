@@ -70,7 +70,7 @@ Explanation: There are no single numbers in the input table so we return null.
 
 
 
-Solution with Runtime 663 ms Beats 83.98% MySQL Submissions:
+1. Solution with Runtime 663 ms Beats 83.98% MySQL Submissions:
 
 select 
 	ifnull(max(t.num), null) as num
@@ -82,3 +82,16 @@ from
 	group by num 
 	having count(*)=1
 ) as t;
+
+2. Solution with CTE Runtime 458ms Beats 48.39% MySQL Submissions:
+
+WITH UniqueNums AS (
+    SELECT 
+        num
+    FROM mynumbers
+    GROUP BY num
+    HAVING COUNT(*) = 1
+)
+SELECT 
+    MAX(num) AS num
+FROM UniqueNums;
