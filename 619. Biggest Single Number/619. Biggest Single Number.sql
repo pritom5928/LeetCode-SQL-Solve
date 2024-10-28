@@ -83,6 +83,9 @@ from
 	having count(*)=1
 ) as t;
 
+- Time complexity: O(NlogN)
+- Space complexity: O(G) where G is the number of unique values in mynumbers table (likely less than N). where N=number of rows.
+
 2. Solution with CTE Runtime 458ms Beats 48.39% MySQL Submissions:
 
 WITH UniqueNums AS (
@@ -95,6 +98,9 @@ WITH UniqueNums AS (
 SELECT 
     MAX(num) AS num
 FROM UniqueNums;
+
+- Time complexity: O(NlogN)
+- Space complexity: O(G) where G is the number of unique values in mynumbers table (likely less than N). where N=number of rows.
 
 3. Solution by Correlated subquery Runtime 432 ms Beats 63.80% MySQL Submissions:
 
@@ -114,4 +120,8 @@ UNION ALL
 SELECT 
     NULL AS num  
 LIMIT 1;
+
+- Time Complexity: O(N ^2)
+- Space Complexity: O(U) where U is the number of unique values in mynumbers.
+
 
