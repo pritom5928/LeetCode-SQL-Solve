@@ -51,7 +51,7 @@ Output:
 +----------+---------+-------------+----------------+--------------------+-----------------------+
 
 
-solution in MySQL:
+1. solution with GROUP BY Runtime 578ms Beats 86.16% in MySQL:
 
 SELECT 
     DATE_FORMAT(trans_date, '%Y-%m') AS month,
