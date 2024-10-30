@@ -62,3 +62,33 @@ SELECT
     SUM(IF(state = 'approved', amount, 0)) AS approved_total_amount
 FROM transactions
 GROUP BY DATE_FORMAT(trans_date, '%Y-%m'), country
+
+
+
+2. solution with Window function Runtime 602ms Beats 77.62% in MySQL:
+
+WITH cte AS (
+    SELECT
+        DATE_FORMAT(t.trans_date, '%Y-%m') AS month,
+        t.country,
+        COUNT(1) OVER w AS trans_count,
+        SUM(IF(t.state = 'approved', 1, 0)) OVER w AS approved_count,
+        SUM(t.amount) OVER w AS trans_total_amount,
+        SUM(IF(t.state = 'approved', t.amount, 0)) OVER w AS approved_total_amount,
+        LEAD(t.country) OVER w AS lead_rnk
+    FROM 
+        transactions t
+    WINDOW w AS (PARTITION BY DATE_FORMAT(t.trans_date, '%Y-%m'), t.country)
+)
+
+SELECT 
+    c.month,
+    c.country,
+    c.trans_count,
+    c.approved_count,
+    c.trans_total_amount,
+    c.approved_total_amount
+FROM 
+    cte c
+WHERE 
+    c.lead_rnk IS NULL;
