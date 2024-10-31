@@ -60,8 +60,8 @@ from Employees e1 join Employees e2 on e1.employee_id = e2.reports_to
 group by e1.employee_id
 order by e1.employee_id
 
- - Time complexity: 
- - Space complexity: 
+	- Time Complexity: Without indexing, O(n^2); with indexing on reports_to, O(n log n).
+	- Space Complexity: O(n).
  
 2. Optimal solution with CTE & JOIN  Runtime 619ms Beats 89.28% of MySQL Submissions:
 
@@ -84,6 +84,9 @@ JOIN reporting_summary r
 ON e.employee_id = r.reports_to
 ORDER BY e.employee_id; 
 
+	- Time Complexity: Without indexing, O(n^2); with indexing on reports_to, O(n log n).
+	- Space Complexity: O(n).
+
 
 3. Solution with WINDOW function & JOIN Runtime 651ms Beats 79.57% of MySQL Submissions:
 
@@ -103,6 +106,9 @@ JOIN (
     WINDOW w AS (PARTITION BY e.reports_to)
 ) n ON m.employee_id = n.reports_to
 ORDER BY m.employee_id;
+
+	- Time Complexity: Without indexing, O(n^2); with indexing on reports_to, O(n log n).
+	- Space Complexity: O(n).
 
 4. Solution with Correlated Subquery Runtime 1115ms Beats 9.68% of MySQL Submissions:
 
@@ -129,3 +135,6 @@ WHERE EXISTS(
         WHERE n.reports_to = m.employee_id
 	)
 ORDER BY m.employee_id;
+
+	- Time Complexity: O(n^2)
+	- Space Complexity: O(n).
