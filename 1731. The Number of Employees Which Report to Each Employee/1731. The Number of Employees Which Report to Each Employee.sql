@@ -103,3 +103,29 @@ JOIN (
     WINDOW w AS (PARTITION BY e.reports_to)
 ) n ON m.employee_id = n.reports_to
 ORDER BY m.employee_id;
+
+4. Solution with Correlated Subquery Runtime 1115ms Beats 9.68% of MySQL Submissions:
+
+SELECT 
+    m.employee_id,
+    m.name,
+    (SELECT 
+            COUNT(*)
+        FROM employees p
+        WHERE p.reports_to = m.employee_id
+	) AS reports_count,
+    ROUND(
+		(SELECT 
+			AVG(p.age)
+         FROM employees p
+         WHERE p.reports_to = m.employee_id)
+	) AS average_age
+FROM
+    employees m
+WHERE EXISTS(
+		SELECT 
+            1
+        FROM employees n
+        WHERE n.reports_to = m.employee_id
+	)
+ORDER BY m.employee_id;
