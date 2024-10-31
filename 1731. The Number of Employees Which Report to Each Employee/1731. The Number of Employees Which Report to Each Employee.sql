@@ -49,7 +49,7 @@ Output:
 Explanation: Hercy has 2 people report directly to him, Alice and Bob. Their average age is (41+36)/2 = 38.5, which is 39 after rounding it to the nearest integer.
 
 
-1. Solution with simple INNER JOIN & GROUP BY Runtime 987ms Beats 94.03% of users with MySQL:
+1. Solution with simple INNER JOIN & GROUP BY Runtime 987ms Beats 94.03% of MySQL Submissions:
 
 select 
 	e1.employee_id,
@@ -63,7 +63,7 @@ order by e1.employee_id
  - Time complexity: 
  - Space complexity: 
  
-2. Optimal solution with CTE & JOIN  Runtime 619ms Beats 89.28% of users with MySQL:
+2. Optimal solution with CTE & JOIN  Runtime 619ms Beats 89.28% of MySQL Submissions:
 
 WITH reporting_summary AS (
     SELECT 
@@ -83,3 +83,23 @@ FROM employees e
 JOIN reporting_summary r 
 ON e.employee_id = r.reports_to
 ORDER BY e.employee_id; 
+
+
+3. Solution with WINDOW function & JOIN Runtime 651ms Beats 79.57% of MySQL Submissions:
+
+SELECT 
+	DISTINCT m.employee_id,
+    m.name,
+    n.reports_count,
+    n.average_age
+FROM employees m
+JOIN (
+    SELECT 
+        DISTINCT e.reports_to,
+        COUNT(1) OVER w AS reports_count,
+        ROUND(AVG(age) OVER w) AS average_age
+    FROM employees e
+    WHERE e.reports_to IS NOT NULL
+    WINDOW w AS (PARTITION BY e.reports_to)
+) n ON m.employee_id = n.reports_to
+ORDER BY m.employee_id;
