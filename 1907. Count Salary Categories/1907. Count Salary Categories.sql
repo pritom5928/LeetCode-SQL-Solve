@@ -51,3 +51,25 @@ Low Salary: Account 2.
 Average Salary: No accounts.
 High Salary: Accounts 3, 6, and 8.
 
+
+1. Naive solution with UNION with runtime 1476ms (Beats 93.43%):
+
+SELECT 
+    'Low Salary' AS category,
+    COUNT(CASE WHEN a.income < 20000 THEN 1 END) AS accounts_count
+FROM accounts a
+UNION ALL
+SELECT 
+    'Average Salary' AS category,
+    COUNT(CASE WHEN a.income BETWEEN 20000 AND 50000 THEN 1 END) AS accounts_count
+FROM accounts a
+UNION ALL
+SELECT 
+    'High Salary' AS category,
+    COUNT(CASE WHEN a.income > 50000 THEN 1 END) AS accounts_count
+FROM accounts a;
+
+	- Time Complexity: O(n)
+	- Space Complexity: O(n)
+	
+
