@@ -43,14 +43,17 @@ Output:
 
 
 
-1. solution with Runtime 646 ms Beats 10.2% MySQL submission:
+1. solution with Runtime 304 ms Beats 45.31% MySQL submission:
 
-select x,y,z,
+SELECT x,y,z,
     CASE
         WHEN (x+y > z AND y+z > x AND z+x > y) THEN 'Yes'
-        else 'No'
-    end as triangle
-from Triangle
+        ELSE 'No'
+    END AS triangle
+FROM Triangle
+
+ - Time Complexity: O(n)
+ - Space Complexity: O(n)
 
 2. Optimal solution with runtime 284ms beats 64.74% MySQL Submission:
 
@@ -66,3 +69,6 @@ SELECT
         ELSE "Yes"
     END AS triangle
 FROM  Triangle t;
+
+ - Time Complexity: O(n)
+ - Space Complexity: O(n)
