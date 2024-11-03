@@ -78,5 +78,24 @@ FROM (
  - Time Complexity: O(nlogn)
  - Space Complexity: O(n)
 
-2. 
+2. Solution with Subquery & AGG() function Runtime 678 ms Beats 67.02% in MySQL:
+
+SELECT 
+    ROUND(
+        AVG(order_date = customer_pref_delivery_date) * 100, 
+        2
+    ) AS immediate_percentage
+FROM 
+    Delivery
+WHERE (customer_id, order_date) IN (
+        SELECT 
+            customer_id, 
+            MIN(order_date) 
+        FROM Delivery
+        GROUP BY customer_id
+    );
+	
+
+ - Time Complexity: O(nlogn+n⋅m). If customer_id values are unique or nearly unique, 𝑚≈n  so the time complexity could approach O(n^2) for large datasets
+ - Space Complexity: O(m), due to the storage required for the subquery result.
 
