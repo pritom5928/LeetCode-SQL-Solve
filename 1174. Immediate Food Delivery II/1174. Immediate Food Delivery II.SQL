@@ -57,17 +57,26 @@ Hence, half the customers have immediate first orders.
 
 
 
-Solution with Rank() window function Runtime 1095 ms Beats 92.83% in MySQL:
+1. Solution with Rank() window function Runtime 637 ms Beats 81.70% in MySQL:
 
 SELECT 
-	ROUND(
-		SUM(IF(a.rnk = 1 AND a.order_date = a.customer_pref_delivery_date, 1, 0)) / COUNT(DISTINCT a.customer_id) * 100, 2
-	) AS immediate_percentage
+    ROUND(
+        SUM(IF
+			(DATEDIFF(p.order_date, p.customer_pref_delivery_date) = 0 AND rnk = 1, 
+            1, 0)
+		) / 
+        (COUNT(DISTINCT customer_id) * 100), 
+    2) AS immediate_percentage 
 FROM (
-	SELECT 
-		*,
-		RANK() OVER(PARTITION BY customer_id ORDER BY order_date) AS rnk
-	FROM delivery
-) AS a;
+    SELECT 
+        d.*,
+        RANK() OVER w AS rnk
+    FROM delivery d
+    WINDOW w AS (PARTITION BY customer_id ORDER BY order_date)
+) p;
 
+ - Time Complexity: O(nlogn)
+ - Space Complexity: O(n)
+
+2. 
 
