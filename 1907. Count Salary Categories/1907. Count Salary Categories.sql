@@ -70,6 +70,32 @@ SELECT
 FROM accounts a;
 
 	- Time Complexity: O(n)
-	- Space Complexity: O(n)
+	- Space Complexity: O(1)
 	
+2. Solution with CTE & LEFT JOIN with runtime 1504ms (Beats 89.57%):
 
+WITH categories_cte AS (
+    SELECT 'Low Salary' AS category
+    UNION 
+    SELECT 'Average Salary'
+    UNION 
+    SELECT 'High Salary'
+)
+SELECT 
+    c.category,
+    COALESCE(COUNT(result.cat), 0) AS accounts_count
+FROM categories_cte c
+LEFT JOIN (
+    SELECT 
+        CASE 
+            WHEN a.income < 20000 THEN 'Low Salary'
+            WHEN a.income BETWEEN 20000 AND 50000 THEN 'Average Salary'
+            WHEN a.income > 50000 THEN 'High Salary'
+        END AS cat
+    FROM accounts a
+) result ON c.category = result.cat
+GROUP BY c.category;
+
+
+	- Time Complexity: O(n)
+	- Space Complexity: O(n)
