@@ -64,7 +64,7 @@ WHERE DATEDIFF(b.event_date, a.event_date) = 1;
 	- Space complexity: O(M)
 
 
-2. Optimal solution with Runtime 532 ms Beats 94.21%:
+2. Optimal solution by JOIN with Runtime 532 ms Beats 94.21%:
 
 WITH min_event_date_cte AS (
     SELECT 
@@ -88,3 +88,23 @@ JOIN min_event_date_cte m
 		
 	- Time complexity: O(NlogN)+O(N)≈O(NlogN),assuming indexing on player_id
 	- Space complexity: O(M), where M is the number of unique player_ids, for the CTE storage.
+	
+
+3. Solution by AGG() & Subquery with Runtime 583 ms Beats 76.89%:
+
+SELECT 
+    ROUND(
+        SUM(CASE WHEN DATEDIFF(event_date, min_event_date) = 1 THEN 1 ELSE 0 END) 
+        / COUNT(DISTINCT player_id),
+        2
+    ) AS fraction
+FROM (
+    SELECT 
+        player_id,
+        event_date,
+        MIN(event_date) OVER (PARTITION BY player_id) AS min_event_date
+    FROM activity
+) AS activity_with_min_date
+
+	- Time complexity: O(NlogG)
+	- Space complexity: O(N)
