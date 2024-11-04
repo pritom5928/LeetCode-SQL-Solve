@@ -60,6 +60,8 @@ FROM
 ON a.player_id = b.player_id
 WHERE DATEDIFF(b.event_date, a.event_date) = 1;
 
+	- Time complexity: O(NlogN)+O(N)≈O(NlogN)
+	- Space complexity: O(M)
 
 
 2. Optimal solution with Runtime 532 ms Beats 94.21%:
@@ -83,3 +85,6 @@ LEFT JOIN activity b
 JOIN min_event_date_cte m 
 	ON a.player_id = m.player_id 
 		AND a.event_date = m.min_date;
+		
+	- Time complexity: O(NlogN)+O(N)≈O(NlogN),assuming indexing on player_id
+	- Space complexity: O(M), where M is the number of unique player_ids, for the CTE storage.
