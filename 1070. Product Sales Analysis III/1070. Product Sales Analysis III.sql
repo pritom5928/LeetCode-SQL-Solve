@@ -69,7 +69,7 @@ Output:
 
 
 
-1. Solution with GROUP BY with 1080 ms Runtime Beats 66.61% MySQL Submission:
+1. Solution with GROUP BY & Sub-query with 1080 ms Runtime Beats 66.61% MySQL Submission:
 
 SELECT 
     product_id,
@@ -100,3 +100,21 @@ FROM (
     FROM sales a
 ) res
 WHERE res.year = res.min_year;
+
+
+3. Solution with CTE & JOIN with 1091ms Runtime Beats 64.01% MySQL Submission:
+
+WITH min_year_cte AS (
+    SELECT 
+        product_id,
+        MIN(year) AS min_year
+    FROM sales
+    GROUP BY product_id
+)
+SELECT 
+    s.product_id,
+    my.min_year AS first_year,
+    s.quantity,
+    s.price
+FROM sales s
+JOIN min_year_cte my ON s.product_id = my.product_id AND s.year = my.min_year;
