@@ -84,3 +84,19 @@ WHERE (product_id, year) IN (
         FROM sales
         GROUP BY product_id
 );
+
+2. Solution with Window function with 1094 ms Runtime Beats 63.36% MySQL Submission:
+
+
+SELECT 
+    res.product_id,
+    res.min_year AS first_year,
+    res.quantity,
+    res.price
+FROM (
+    SELECT 
+        a.*,
+        MIN(year) OVER (PARTITION BY product_id) AS min_year
+    FROM sales a
+) res
+WHERE res.year = res.min_year;
