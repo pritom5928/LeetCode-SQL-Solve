@@ -85,6 +85,9 @@ WHERE (product_id, year) IN (
         GROUP BY product_id
 );
 
+	- Time Complexity: O(n log n) + O(N*M) (with indexing optimizations)
+	- Space Complexity: O(m)
+
 2. Solution with Window function with 1094 ms Runtime Beats 63.36% MySQL Submission:
 
 
@@ -102,6 +105,9 @@ FROM (
 WHERE res.year = res.min_year;
 
 
+	- Time Complexity: O(n log n)
+	- Space Complexity: O(n)
+
 3. Solution with CTE & JOIN with 1091ms Runtime Beats 64.01% MySQL Submission:
 
 WITH min_year_cte AS (
@@ -118,3 +124,7 @@ SELECT
     s.price
 FROM sales s
 JOIN min_year_cte my ON s.product_id = my.product_id AND s.year = my.min_year;
+
+
+	- Time Complexity: O(n)
+	- Space Complexity: O(n)
