@@ -61,7 +61,7 @@ Output:
 Explanation: 
 The customers who bought all the products (5 and 6) are customers with IDs 1 and 3.
 
-1. solution Runtime 582ms beats 76.21% MySQL submission:
+1. Sub-query with Runtime 582ms beats 76.21% MySQL submission:
 
 SELECT 
     c.customer_id
@@ -73,3 +73,23 @@ HAVING COUNT(DISTINCT c.product_key) = (
         FROM 
             product p
 );
+
+	- Time Complexity: O(MlogK)+O(N)
+	- Space Complexity: O(K)
+	
+2. Optimal approach for large dataset by CTE with Runtime 591ms beats 71.66% MySQL submission:
+
+WITH ProductCount AS (
+    SELECT 
+        COUNT(1) AS cnt
+    FROM product
+)
+SELECT 
+    customer_id 
+FROM customer 
+GROUP BY customer_id 
+HAVING COUNT(DISTINCT product_key) = (SELECT cnt FROM ProductCount);
+
+
+	- Time Complexity: O(M+N)
+	- Space Complexity: O(K)
