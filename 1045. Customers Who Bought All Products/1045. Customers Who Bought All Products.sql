@@ -61,15 +61,15 @@ Output:
 Explanation: 
 The customers who bought all the products (5 and 6) are customers with IDs 1 and 3.
 
-solution Runtime 979 ms beats 64.40% MySQL submission:
+1. solution Runtime 582ms beats 76.21% MySQL submission:
 
-select
-	 customer_id 
-from customer 
-group by customer_id
-having sum(distinct product_key) = 
-	(
-		select 
-			sum(distinct product_key) 
-		from product
-	);
+SELECT 
+    c.customer_id
+FROM customer c
+GROUP BY c.customer_id
+HAVING COUNT(DISTINCT c.product_key) = (
+        SELECT 
+            COUNT(DISTINCT p.product_key)
+        FROM 
+            product p
+);
