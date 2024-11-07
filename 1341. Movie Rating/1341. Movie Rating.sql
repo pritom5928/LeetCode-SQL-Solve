@@ -157,3 +157,8 @@ UNION ALL
     ORDER BY AVG(mr.rating) DESC, m.title
     LIMIT 1
 );
+
+ - Time complexity: s O(M+ MlogM + UlogU), where:
+	M = number of MovieRating records
+	U = number of distinct users.
+ - Space Complexity: O(M)
