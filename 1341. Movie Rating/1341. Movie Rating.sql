@@ -91,3 +91,36 @@ Daniel and Monica have rated 3 movies ("Avengers", "Frozen 2" and "Joker") but D
 Frozen 2 and Joker have a rating average of 3.5 in February but Frozen 2 is smaller lexicographically.
 
 
+1. Solution with Window FUNCTION, Join & GROUP BY that runtime 1302ms (Beats 70.51%):
+
+(
+    SELECT 
+       u.name AS results
+    FROM (
+        SELECT 
+            mr.user_id,
+            COUNT(*) AS totalRatings
+        FROM MovieRating mr
+        GROUP BY mr.user_id
+        ORDER BY totalRatings DESC
+    ) AS highest_reviewer
+    JOIN users u ON highest_reviewer.user_id = u.user_id
+    GROUP BY highest_reviewer.user_id 
+    ORDER BY totalRatings DESC, u.name ASC 
+    LIMIT 1
+)
+UNION
+SELECT 
+    avgResult.title AS results
+FROM (
+    SELECT 
+        m.title,
+        AVG(rating) OVER(PARTITION BY mr.movie_id) AS AvgRatingPerMovie
+    FROM MovieRating mr
+    JOIN movies m ON mr.movie_id = m.movie_id
+    WHERE DATE_FORMAT(mr.created_at, '%Y-%m') = '2020-02'
+    ORDER BY AvgRatingPerMovie DESC, m.title ASC
+    LIMIT 1
+) AS avgResult;
+
+
