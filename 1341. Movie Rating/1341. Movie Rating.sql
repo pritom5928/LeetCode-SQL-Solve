@@ -91,7 +91,7 @@ Daniel and Monica have rated 3 movies ("Avengers", "Frozen 2" and "Joker") but D
 Frozen 2 and Joker have a rating average of 3.5 in February but Frozen 2 is smaller lexicographically.
 
 
-1. Solution with Window FUNCTION, Join & GROUP BY that runtime 1302ms (Beats 70.51%):
+1. Naive Solution with Window FUNCTION, Join & GROUP BY that runtime 1302ms (Beats 70.51%):
 
 (
     SELECT 
@@ -123,4 +123,10 @@ FROM (
     LIMIT 1
 ) AS avgResult;
 
-
+ - Time complexity: s O(N+ MlogM + NlogK + KlogK), where:
+	N = number of MovieRating records
+	M = number of users
+	K = number of movies
+ - Space Complexity: O(M + K), where:
+	M = number of users
+	K = number of movies
