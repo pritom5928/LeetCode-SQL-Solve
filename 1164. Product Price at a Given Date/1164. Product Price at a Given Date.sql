@@ -67,6 +67,8 @@ FROM products a LEFT JOIN (
     ) AND p.change_date <= '2019-08-16'
 ) AS b ON a.product_id = b.product_id;
 
+ - Time Complexity: O(n^2) due to the correlated subquery and potential join inefficiencies.
+ - Space Complexity: O(n), primarily for intermediate storage of the subquery result and joined data.
 
 
 2. More optimal solution with JOIN, Subquery & UNION with Runtime 994 ms Beats 38.70% MySQL Online submission:
@@ -89,6 +91,9 @@ FROM products WHERE (product_id, change_date) IN (
 	WHERE change_date <= '2019-08-16'
 	GROUP BY product_id
 ) ;
+
+ - Time Complexity: O(nlogn)
+ - Space Complexity: O(n)
 
 
 3. Solution with Subquery & JOIN with Runtime 553 ms Beats 51.46% MySQL Online submission:
@@ -119,6 +124,9 @@ SELECT
 FROM all_ids a
 LEFT JOIN filtered_date b ON a.product_id = b.product_id;
 
+ - Time Complexity: O(nlogn)
+ - Space Complexity: O(n)
+
 
 4. Fastest Solution with window function Runtime 415 ms Beats 98.97% MySQL Online submission:
 
@@ -137,3 +145,5 @@ FROM  (SELECT DISTINCT product_id FROM products) ids
 LEFT JOIN cte c ON c.product_id = ids.product_id AND c.rn = 1
 WHERE c.rn = 1 OR c.rn IS NULL;
 
+ - Time Complexity: O(nlogn)
+ - Space Complexity: O(n)
