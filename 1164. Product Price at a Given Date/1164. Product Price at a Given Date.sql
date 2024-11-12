@@ -117,5 +117,23 @@ SELECT
     a.product_id,
     IF(b.new_price IS NULL, 10, b.new_price) AS price
 FROM all_ids a
-LEFT JOIN filtered_date b ON a.product_id = b.product_id
+LEFT JOIN filtered_date b ON a.product_id = b.product_id;
+
+
+4. Fastest Solution with window function Runtime 415 ms Beats 98.97% MySQL Online submission:
+
+
+WITH cte AS (
+    SELECT 
+        p.*,
+        ROW_NUMBER() OVER(PARTITION BY product_id ORDER BY change_date DESC) AS rn
+    FROM products p
+    WHERE change_date <= '2019-08-16'
+)
+SELECT 
+   ids.product_id,
+   COALESCE(new_price, 10) as price
+FROM  (SELECT DISTINCT product_id FROM products) ids
+LEFT JOIN cte c ON c.product_id = ids.product_id AND c.rn = 1
+WHERE c.rn = 1 OR c.rn IS NULL;
 
