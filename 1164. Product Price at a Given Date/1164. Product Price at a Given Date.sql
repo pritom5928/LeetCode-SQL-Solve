@@ -49,7 +49,7 @@ Output:
 
 
 
-Naive solution with Correlated subquery with Runtime 2463 ms beats 5.4% MySQL Online submission:
+1. Naive solution with Correlated subquery with Runtime 2463 ms beats 5.4% MySQL Online submission:
 
 SELECT 
     DISTINCT a.product_id,
@@ -69,7 +69,7 @@ FROM products a LEFT JOIN (
 
 
 
-More optimal solution with JOIN with Runtime 994 ms Beats 38.70% MySQL Online submission:
+2. More optimal solution with JOIN, Subquery & UNION with Runtime 994 ms Beats 38.70% MySQL Online submission:
 
 SELECT 
      product_id, 
@@ -89,3 +89,33 @@ FROM products WHERE (product_id, change_date) IN (
 	WHERE change_date <= '2019-08-16'
 	GROUP BY product_id
 ) ;
+
+
+3. Solution with Subquery & JOIN with Runtime 553 ms Beats 51.46% MySQL Online submission:
+
+WITH filtered_date AS (
+    SELECT 
+        product_id,
+        new_price,
+        change_date
+    FROM products 
+    WHERE (product_id, change_date) IN (
+        SELECT 
+            product_id,
+            MAX(change_date)
+        FROM products
+        WHERE change_date <= '2019-08-16'
+        GROUP BY product_id
+    )
+),
+all_ids AS (
+    SELECT DISTINCT 
+        product_id
+    FROM products
+)
+SELECT 
+    a.product_id,
+    IF(b.new_price IS NULL, 10, b.new_price) AS price
+FROM all_ids a
+LEFT JOIN filtered_date b ON a.product_id = b.product_id
+
