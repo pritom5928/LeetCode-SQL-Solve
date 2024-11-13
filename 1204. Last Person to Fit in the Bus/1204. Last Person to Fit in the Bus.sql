@@ -61,7 +61,7 @@ Explanation: The folowing table is ordered by the turn for simplicity.
 
 
 
-Solution with Runtime 1574 ms that Beats 65.19% MySQL Submissions:
+1. Solution with WINDOW FUNCTION Runtime 896ms that Beats 65.19% MySQL Submissions:
 
 SELECT 
 	person_name
@@ -72,3 +72,24 @@ FROM (
 ) AS Res
 WHERE Sum <= 1000
 ORDER BY Sum DESC LIMIT 1;
+
+
+2.Solution with CORRELATED SUB-QUERY Runtime 1672ms that Beats 30.50% MySQL Submissions:
+
+WITH cte AS (
+    SELECT 
+        * 
+    FROM queue
+    ORDER BY turn
+)
+SELECT 
+    person_name
+FROM cte AS a
+WHERE 1000 >= (
+    SELECT 
+        SUM(weight) 
+    FROM queue AS b 
+    WHERE a.turn >= b.turn
+)
+ORDER BY turn DESC
+LIMIT 1;
