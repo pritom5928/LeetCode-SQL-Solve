@@ -52,3 +52,12 @@ FROM users
 ORDER BY user_id;
 
 
+2. Solution with LEFT()& RIGHT() with Runtime 553ms beats 98.59% submission:
+
+SELECT 
+    user_id,
+    CONCAT(UPPER(LEFT(name, 1)),
+            LOWER(RIGHT(name, CHAR_LENGTH(name) - 1))
+	) AS name
+FROM users
+ORDER BY user_id;
