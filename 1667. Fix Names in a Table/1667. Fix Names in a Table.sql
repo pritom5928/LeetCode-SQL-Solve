@@ -40,14 +40,15 @@ Output:
 +---------+-------+
 
 
-Solution with Runtime 1025 ms beats 95.57% submission:
+1. Solution with LEFT() & SUBSTRING() with Runtime 547ms beats 99.02% submission:
 
-select 
- user_id,
- concat(
-	upper(left(name, 1)),
-	(lower(substring(name, 2, char_length(name))))
-  ) as name
-from users
-order by user_id;
- 
+SELECT 
+    user_id,
+    CONCAT(
+        UPPER(LEFT(name, 1)), 
+        LOWER(SUBSTRING(name, 2, CHAR_LENGTH(name)))
+    ) AS name
+FROM users
+ORDER BY user_id;
+
+
