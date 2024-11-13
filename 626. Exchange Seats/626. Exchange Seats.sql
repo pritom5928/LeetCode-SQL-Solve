@@ -50,19 +50,25 @@ Explanation:
 Note that if the number of students is odd, there is no need to change the last one's seat.
 
 
-1. Solution with Sub-Query & Conditional statement that exceed 78.67% of MySQL online submissions :
+1. Solution with CTE & Conditional statement with Runtime 325ms Beats 99.10% of MySQL online submissions :
 
+
+WITH max_cte AS (
+	SELECT 
+		MAX(Id) AS max_id 
+	FROM Seat
+)
 SELECT 
-   IF(Id < (SELECT MAX(Id) FROM Seat), 
+   IF(Id < (SELECT max_id FROM max_cte), 
 		IF(Id%2 = 1, Id+1, Id-1), 
 		IF(Id%2 = 1, Id, Id-1)
-	 ) AS Id,
-   Student
+	 ) AS id,
+   student
 FROM Seat
 ORDER BY Id;
 
 
-2. Optimal solution by LEFT JOIN with Runtime 325ms Beats 94.025 of MySQL online submissions :
+2. Optimal solution for large Datasets by LEFT JOIN with Runtime 325ms Beats 94.025 of MySQL online submissions :
 
 SELECT 
     s.id,
