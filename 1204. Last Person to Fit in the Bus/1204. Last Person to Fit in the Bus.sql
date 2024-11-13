@@ -73,6 +73,10 @@ FROM (
 WHERE Sum <= 1000
 ORDER BY Sum DESC LIMIT 1;
 
+	
+	- Time Complexity: O(n log n)
+	- Space Complexity: O(n)
+
 
 2.Solution with CORRELATED SUB-QUERY & CTE Runtime 1672ms that Beats 30.50% MySQL Submissions:
 
@@ -94,6 +98,9 @@ WHERE 1000 >= (
 ORDER BY turn DESC
 LIMIT 1;
 
+    - Time Complexity: O(n^2) due to the correlated subquery.
+	- Space Complexity: O(n) due to the storage of the CTE and temporary sum calculations.
+
 
 3. Solution with JOIN & CTE Runtime 1543ms that Beats 35.36% MySQL Submissions:
 
@@ -110,3 +117,6 @@ JOIN queue b ON a.turn >= b.turn
 GROUP BY a.person_id
 HAVING SUM(b.weight) <= 1000
 LIMIT 1;
+
+	- Time Complexity: O(n^2) due to the JOIN operation.
+	- Space Complexity: O(n^2) due to the intermediate join result set.
