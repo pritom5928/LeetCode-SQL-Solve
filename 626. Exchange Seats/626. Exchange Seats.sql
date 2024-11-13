@@ -50,7 +50,7 @@ Explanation:
 Note that if the number of students is odd, there is no need to change the last one's seat.
 
 
-Solution that exceed 78.67% of MySQL online submissions :
+1. Solution with Sub-Query & Conditional statement that exceed 78.67% of MySQL online submissions :
 
 SELECT 
    IF(Id < (SELECT MAX(Id) FROM Seat), 
@@ -60,3 +60,14 @@ SELECT
    Student
 FROM Seat
 ORDER BY Id;
+
+
+2. Optimal solution by LEFT JOIN with Runtime 325ms Beats 94.025 of MySQL online submissions :
+
+SELECT 
+    s.id,
+    COALESCE(c.student, s.student) AS student
+FROM Seat s 
+LEFT JOIN  Seat c 
+	ON (s.id % 2 != 0 AND s.id + 1 = c.id) 
+    OR (s.id % 2 = 0 AND s.id - 1 = c.id);
