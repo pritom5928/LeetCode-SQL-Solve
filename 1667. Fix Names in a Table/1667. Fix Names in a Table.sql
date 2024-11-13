@@ -51,6 +51,8 @@ SELECT
 FROM users
 ORDER BY user_id;
 
+	- Time complexity: O(n*m)
+	- Space complexity: O(n*m)
 
 2. Solution with LEFT()& RIGHT() with Runtime 553ms beats 98.59% submission:
 
@@ -61,3 +63,6 @@ SELECT
 	) AS name
 FROM users
 ORDER BY user_id;
+
+	- Time complexity: O(n*m)
+	- Space complexity: O(n*m)
