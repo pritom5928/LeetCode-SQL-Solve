@@ -74,7 +74,7 @@ WHERE Sum <= 1000
 ORDER BY Sum DESC LIMIT 1;
 
 
-2.Solution with CORRELATED SUB-QUERY Runtime 1672ms that Beats 30.50% MySQL Submissions:
+2.Solution with CORRELATED SUB-QUERY & CTE Runtime 1672ms that Beats 30.50% MySQL Submissions:
 
 WITH cte AS (
     SELECT 
@@ -92,4 +92,21 @@ WHERE 1000 >= (
     WHERE a.turn >= b.turn
 )
 ORDER BY turn DESC
+LIMIT 1;
+
+
+3. Solution with JOIN & CTE Runtime 1543ms that Beats 35.36% MySQL Submissions:
+
+WITH cte AS (
+    SELECT 
+        * 
+    FROM queue
+    ORDER BY turn
+)
+SELECT 
+    a.person_name 
+FROM cte a
+JOIN queue b ON a.turn >= b.turn
+GROUP BY a.person_id
+HAVING SUM(b.weight) <= 1000
 LIMIT 1;
