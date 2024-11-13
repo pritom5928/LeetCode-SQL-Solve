@@ -47,11 +47,10 @@ Output:
 | 5  | Jeames  |
 +----+---------+
 Explanation: 
-Note that if the number of students is odd, there is no need to change the last one's seat.
+Note that if the number of students is odd, there is no need to change the last ones seat.
 
 
-1. Solution with CTE & Conditional statement with Runtime 325ms Beats 99.10% of MySQL online submissions :
-
+1. Most optimal solution with CTE & Conditional statement with Runtime 325ms Beats 99.10% of MySQL online submissions :
 
 WITH max_cte AS (
 	SELECT 
@@ -67,8 +66,10 @@ SELECT
 FROM Seat
 ORDER BY Id;
 
+ - Time complexity: O(n)
+ - Space complexity: O(n)
 
-2. Optimal solution for large Datasets by LEFT JOIN with Runtime 325ms Beats 94.02% of MySQL online submissions :
+2. Solution by LEFT JOIN with Runtime 325ms Beats 94.02% of MySQL online submissions :
 
 SELECT 
     s.id,
@@ -78,8 +79,11 @@ LEFT JOIN  Seat c
 	ON (s.id % 2 != 0 AND s.id + 1 = c.id) 
     OR (s.id % 2 = 0 AND s.id - 1 = c.id);
 	
+	
+ - Time complexity: O(n^2)
+ - Space complexity: O(n)
 
-3.Solution by WINDOW FUNCTION with Runtime 334ms Beats 90.20% of MySQL online submissions:
+3. Optimal solution by WINDOW FUNCTION with Runtime 334ms Beats 90.20% of MySQL online submissions:
 
 SELECT 
     CASE 
@@ -97,3 +101,6 @@ SELECT
     student
 FROM Seat
 ORDER BY Id;
+
+ - Time complexity: O(n)
+ - Space complexity: O(n)
