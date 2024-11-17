@@ -49,12 +49,13 @@ Follow up: In the real world, multiple people could have the same most number of
 Could you find all these people in this case?
 
 
-Solution with Aggregate func Runtime 463 ms Beats 72.17% MySQL Submissions:
+1. Solution with Aggregate func Runtime 278 ms Beats 97.23% MySQL Submissions:
 
 SELECT 
-	Result.requester_id  AS id,
+	    Result.requester_id  AS id,
         SUM(Total) AS num 
-FROM (
+FROM
+(
 	(
 		SELECT
 			requester_id,
@@ -76,16 +77,22 @@ ORDER BY num DESC LIMIT 1
 
 
 
-Solution with Corelated Subquery Runtime 508 ms Beats 47.54% MySQL Submissions:
+2. Solution with UNION ALL Runtime 297 ms Beats 89.60% MySQL Submissions:
 
 SELECT 
-	requester_id as id,
-    	(
-		SELECT 
-			COUNT(*) 
-		FROM Requestaccepted r1 
-                WHERE id = r1.requester_id OR id = r1.accepter_id
-	) as num
-FROM Requestaccepted
-GROUP BY requester_id
-ORDER BY num DESC LIMIT 1
+    id,
+    COUNT(*) AS num
+FROM (
+    SELECT 
+        requester_id AS id
+    FROM RequestAccepted
+    
+    UNION ALL
+    
+    SELECT 
+        accepter_id AS id
+    FROM RequestAccepted
+) combined
+GROUP BY id
+ORDER BY num DESC
+LIMIT 1;
