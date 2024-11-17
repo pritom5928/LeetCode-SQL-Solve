@@ -75,7 +75,8 @@ FROM
 GROUP BY Result.requester_id
 ORDER BY num DESC LIMIT 1
 
-
+	- Time complexity: O(nlogn), where n = number of rows of this table
+	- Space complexity: O(d), where d = number of distinct ids 
 
 2. Solution with UNION ALL Runtime 297 ms Beats 89.60% MySQL Submissions:
 
@@ -96,3 +97,6 @@ FROM (
 GROUP BY id
 ORDER BY num DESC
 LIMIT 1;
+
+	- Time complexity: O(nlogd), where n = number of rows of this table
+	- Space complexity: O(n+d), where d = number of distinct ids 
