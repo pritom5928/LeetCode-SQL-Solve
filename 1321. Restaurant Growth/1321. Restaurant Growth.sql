@@ -114,6 +114,8 @@ LIMIT 18446744073709551615 OFFSET 6;
 
 3. Solution with CTE, window function & CROSS JOIN with Runtime 372ms Beats 70.28% MySQL submisson:
 
+	- Time Complexity: O(n^2)
+	- Space Complexity: O(n^2).
 
 SELECT 
     x.visited_on,
