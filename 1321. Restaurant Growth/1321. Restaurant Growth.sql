@@ -63,12 +63,43 @@ Explanation:
 4th moving average from 2019-01-04 to 2019-01-10 has an average_amount of (130 + 110 + 140 + 150 + 80 + 110 + 130 + 150)/7 = 142.86
 
 
-Solution with window function Runtime 595 ms Beats 95.69% MySQL submisson:
+1. Solution with window function Runtime 288ms Beats 100% MySQL submisson:
 
-select 
+SELECT 
     visited_on,
-    sum(sum(amount)) over(order by visited_on rows between 6 preceding and current row) as amount,
-    round(avg(sum(amount)) over(order by visited_on rows between 6 preceding and current row), 2) as average_amount
-from customer
-group by visited_on
-limit 6, 10000;
+    SUM(SUM(amount)) OVER (
+        ORDER BY visited_on 
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS amount,
+    ROUND(
+        AVG(SUM(amount)) OVER (
+            ORDER BY visited_on 
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ), 
+        2
+    ) AS average_amount
+FROM customer
+GROUP BY visited_on
+LIMIT 18446744073709551615 OFFSET 6;
+
+2. Solution with Correlated Subquery with Runtime 352ms Beats 85.10% MySQL submisson:
+
+
+SELECT 
+    c1.visited_on,
+    (
+        SELECT SUM(amount) 
+        FROM customer c2
+        WHERE c2.visited_on BETWEEN DATE_SUB(c1.visited_on, INTERVAL 6 DAY) AND c1.visited_on
+    ) AS amount,
+    ROUND(
+        (
+            SELECT SUM(amount) / COUNT(DISTINCT c2.visited_on)
+            FROM customer c2
+            WHERE c2.visited_on BETWEEN DATE_SUB(c1.visited_on, INTERVAL 6 DAY) AND c1.visited_on
+        ), 
+        2
+    ) AS average_amount
+FROM customer c1
+GROUP BY c1.visited_on
+LIMIT 18446744073709551615 OFFSET 6;
