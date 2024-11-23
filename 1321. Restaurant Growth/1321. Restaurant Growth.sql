@@ -103,3 +103,24 @@ SELECT
 FROM customer c1
 GROUP BY c1.visited_on
 LIMIT 18446744073709551615 OFFSET 6;
+
+
+3. Solution with CTE, window function & CROSS JOIN with Runtime 372ms Beats 70.28% MySQL submisson:
+
+
+SELECT 
+    x.visited_on,
+    x.total AS amount,
+    ROUND(x.total / 7, 2) AS average_amount
+FROM (
+    SELECT 
+        c.*,
+        SUM(amount) OVER (
+            ORDER BY visited_on 
+            RANGE INTERVAL 6 DAY PRECEDING
+        ) AS total
+    FROM customer c
+) x, customer a
+WHERE DATEDIFF(x.visited_on, a.visited_on) = 6
+GROUP BY x.visited_on
+ORDER BY x.visited_on;
