@@ -88,6 +88,9 @@ LIMIT 18446744073709551615 OFFSET 6;
 	
 2. Solution with Correlated Subquery with Runtime 352ms Beats 85.10% MySQL submisson:
 
+	- Time Complexity: O(n^2)
+	- Space Complexity: O(m), where m is the number of unique visited_on values.
+
 
 SELECT 
     c1.visited_on,
