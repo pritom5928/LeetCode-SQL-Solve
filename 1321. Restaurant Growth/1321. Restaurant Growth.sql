@@ -65,6 +65,9 @@ Explanation:
 
 1. Solution with window function Runtime 288ms Beats 100% MySQL submisson:
 
+	- Time Complexity: O(n)
+	- Space Complexity: O(m), where m is the number of unique visited_on values.
+
 SELECT 
     visited_on,
     SUM(SUM(amount)) OVER (
@@ -81,7 +84,8 @@ SELECT
 FROM customer
 GROUP BY visited_on
 LIMIT 18446744073709551615 OFFSET 6;
-
+	
+	
 2. Solution with Correlated Subquery with Runtime 352ms Beats 85.10% MySQL submisson:
 
 
