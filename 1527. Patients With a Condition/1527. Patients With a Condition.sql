@@ -48,7 +48,8 @@ Explanation: Bob and George both have a condition that starts with DIAB1.
 
 1. Solution Runtime 392 ms that Beats 57.75% MySQL submission:
 
-	
+	- Time complexity: O(n * m), where n is the number of rows and m is the average length of strings in the conditions column.
+	- Space complexity: O(n), as it stores the result set.
 
 select 
 	* 
