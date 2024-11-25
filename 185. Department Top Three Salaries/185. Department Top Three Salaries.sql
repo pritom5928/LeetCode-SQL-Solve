@@ -88,7 +88,7 @@ In the Sales department:
 Formula: COUNT(DISTINCT(outer query value < inner query value)) ==> THIS FORMULA, mainly defines
  that how many values from inner query is greater than the each iteration of outer query.
 
-1. Solution by Correlated Subquery in MySQL that runtime 1226ms beats 35.78% MySQL online submissions :
+1. Solution by Correlated Subquery that runtime 1226ms beats 35.78% MySQL online submissions :
 
 	- Time complexity: O(n*mlogm)
 	- Space complexity: O(m)
@@ -104,7 +104,7 @@ WHERE 3 > (SELECT COUNT(distinct(salary)) FROM employee e2
 		  
 
 
-2.  Solution by Window function in MySQL that runtime 826ms beats 97.79% MySQL online submissions :
+2.  Solution by Window function that runtime 826ms beats 97.79% MySQL online submissions :
 
 	- Time complexity: O(n log m)
 	- Space complexity: O(n)
