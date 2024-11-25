@@ -59,6 +59,9 @@ where conditions like 'DIAB1%' or conditions like '% %DIAB1%';
 
 2. Solution with REGEXP method that Runtime 355 ms that Beats 83.% MySQL submission
 
+	- Time complexity: O(n * m), where n is the number of rows and m is the average length of strings in the conditions column.
+	- Space complexity: O(n), as it stores the result set
+
 SELECT 
     *
 FROM patients
