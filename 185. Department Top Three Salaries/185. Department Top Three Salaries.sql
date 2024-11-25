@@ -90,6 +90,9 @@ Formula: COUNT(DISTINCT(outer query value < inner query value)) ==> THIS FORMULA
 
 1. Solution by Correlated Subquery in MySQL that beats 36.80% MySQL online submissions :
 
+	- Time complexity: O(N*MlogM)
+	- Space complexity: O(M)
+
 SELECT 
     d.name AS Department,
     e1.name AS Employee,
@@ -98,3 +101,8 @@ FROM employee e1 JOIN department d ON e1.DepartmentId = d.id
 WHERE 3 > (SELECT COUNT(distinct(salary)) FROM employee e2 
 			WHERE e1.DepartmentId = e2.DepartmentId AND e1.Salary < e2.salary
 		  )
+		  
+
+
+
+
