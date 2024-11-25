@@ -46,9 +46,13 @@ Output:
 Explanation: Bob and George both have a condition that starts with DIAB1.
 
 
-Solution Runtime 674 ms that Beats 46.10% MySQL submission:
+1. Solution Runtime 392 ms that Beats 57.75% MySQL submission:
+
+	
 
 select 
 	* 
 from patients
 where conditions like 'DIAB1%' or conditions like '% %DIAB1%';
+
+
