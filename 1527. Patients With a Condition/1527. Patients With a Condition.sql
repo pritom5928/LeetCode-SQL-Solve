@@ -57,3 +57,9 @@ from patients
 where conditions like 'DIAB1%' or conditions like '% %DIAB1%';
 
 
+2. Solution with REGEXP method that Runtime 355 ms that Beats 83.% MySQL submission
+
+SELECT 
+    *
+FROM patients
+WHERE conditions REGEXP '(^DIAB1| DIAB1)';
