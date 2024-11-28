@@ -47,7 +47,7 @@ Explanation: john@example.com is repeated two times. We keep the row with the sm
 
 
 
-Solution:
+1. Subquery with runtime 575ms (beats 93.65%):
 
 
 DELETE FROM Person 
