@@ -94,3 +94,22 @@ HAVING unit >= 100;
 
 	- Time complexity: O(N * M), here N = numbers of products, M = number of orders
 	- Space complexity: O(N + M + G), G = numbers of total unique products on orders table after satisfying WHERE condition 
+	
+2. Solution with Join, CTE & Window function with Runtime 763 ms (Beats 60.43%):
+
+WITH filtered_Order AS (
+    SELECT 
+        o.product_id,
+        SUM(o.unit) OVER (PARTITION BY o.product_id) AS total,
+        ROW_NUMBER() OVER (PARTITION BY o.product_id ORDER BY o.product_id) AS rn
+    FROM Orders o 
+    WHERE o.order_date >= '2020-02-01' 
+          AND o.order_date <= '2020-02-29'
+)
+SELECT 
+    p.product_name,
+    r.total AS unit
+FROM filtered_Order r
+JOIN products p ON p.product_id = r.product_id
+WHERE r.rn = 1 
+  AND r.total >= 100;
