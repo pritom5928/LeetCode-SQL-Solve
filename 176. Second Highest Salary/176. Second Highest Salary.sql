@@ -101,6 +101,10 @@ SELECT
 		NULL
 	) AS SecondHighestSalary
 
+	- Time complexity: O(N^2)
+	- Space complexityL: O(N)
+
+
 solution: 
 
 
