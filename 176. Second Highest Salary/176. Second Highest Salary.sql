@@ -105,8 +105,16 @@ SELECT
 	- Space complexityL: O(N)
 
 
-solution: 
+3. Optimal solution with Runtime 252ms (Beats 93.26%):
 
 
-SELECT IFNULL((SELECT DISTINCT(Salary) FROM employee ORDER BY Salary DESC LIMIT 1, 1), null) as SecondHighestSalary ;
+
+SELECT 
+    IFNULL((SELECT 
+				DISTINCT Salary
+                FROM employee
+                ORDER BY Salary DESC
+                LIMIT 1 , 1),
+            NULL
+	) AS SecondHighestSalary;
 
