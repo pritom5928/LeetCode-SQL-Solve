@@ -86,6 +86,21 @@ LIMIT 1;
 	- Time complexity: O(N log N)
 	- Space complexityL: O(N)
 
+2. Correlated subquery with Runtime 839ms (Beats 5.00%):
+
+SELECT 
+    IFNULL(
+			(SELECT 
+				DISTINCT a.salary
+			FROM Employee a
+			WHERE 1 = (SELECT 
+                            COUNT(DISTINCT b.salary)
+                        FROM employee b
+                        WHERE b.salary > a.salary)
+			),
+		NULL
+	) AS SecondHighestSalary
+
 solution: 
 
 
