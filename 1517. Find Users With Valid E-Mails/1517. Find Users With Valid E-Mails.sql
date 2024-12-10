@@ -63,3 +63,6 @@ SELECT
 	* 
 FROM users
 WHERE mail REGEXP '^[a-zA-Z][a-zA-Z0-9._-]*@leetcode\\.com$';
+
+	- Time complexity: O(N * L), here N is the number of rows in the users table, and L is the average length of the mail field.
+	- Space complexity: O(K * M),here K is the number of rows that match the regex pattern, and M is the number of columns in the users table.
