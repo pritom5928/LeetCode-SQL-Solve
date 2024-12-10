@@ -118,3 +118,5 @@ SELECT
             NULL
 	) AS SecondHighestSalary;
 
+	- Time complexity: O(N log N)
+	- Space complexityL: O(N)
