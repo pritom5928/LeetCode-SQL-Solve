@@ -117,3 +117,22 @@ WHERE r.rn = 1
 
 	- Time complexity: O(N + M), here N = numbers of products, M = number of orders
 	- Space complexity: O(M)
+	
+	
+3. Solution with Join, Sub-query & Group by with Runtime 669 ms (Beats 90.14%):
+
+SELECT 
+    p.product_name,
+    o.total_units AS unit
+FROM products p
+JOIN (
+    SELECT 
+        o.product_id,
+        SUM(o.unit) AS total_units
+    FROM Orders o
+    WHERE o.order_date >= '2020-02-01' 
+          AND o.order_date <= '2020-02-29'
+    GROUP BY o.product_id
+    HAVING SUM(o.unit) >= 100
+) o ON p.product_id = o.product_id
+ORDER BY p.product_name;
