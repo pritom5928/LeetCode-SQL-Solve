@@ -1,9 +1,6 @@
 176. Second Highest Salary
 Medium
 
-2199
-
-763
 
 Add to List
 
@@ -86,7 +83,8 @@ WHERE NOT EXISTS (
 )
 LIMIT 1;
 
-
+	- Time complexity: O(N log N)
+	- Space complexityL: O(N)
 
 solution: 
 
