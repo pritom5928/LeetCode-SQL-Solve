@@ -12,7 +12,7 @@ Table: Products
 | product_category | varchar |
 +------------------+---------+
 product_id is the primary key for this table.
-This table contains data about the company's products.
+This table contains data about the companys products.
  
 
 Table: Orders
@@ -82,7 +82,7 @@ Products with product_id = 4 was not ordered in February 2020.
 Products with product_id = 5 is ordered in February a total of (50 + 50) = 100.
 
 
-Solution Runtime 1316 ms Beats 41.76% MySQL Submission:
+1. Solution with Join & GROUP BY with Runtime 762 ms (Beats 60.75%):
 
 SELECT 
     p.product_name,
