@@ -61,6 +61,32 @@ Output:
 +---------------------+
 
 
+1. Naive solution with Window function with Runtime 255ms (Beats 91.73%):
+
+SELECT 
+	salary as SecondHighestSalary
+FROM (
+    SELECT 
+        e.*,
+        DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk
+    FROM employee e
+) res
+WHERE res.rnk = 2
+UNION ALL
+SELECT NULL
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM (
+        SELECT 
+            e.*,
+            RANK() OVER (ORDER BY salary DESC) AS rnk
+        FROM employee e
+    ) res
+    WHERE res.rnk = 2
+)
+LIMIT 1;
+
+
 
 solution: 
 
