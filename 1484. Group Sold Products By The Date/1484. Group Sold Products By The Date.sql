@@ -65,3 +65,32 @@ ORDER BY sell_date ASC;
 
 	- Time Complexity: O(N + G log G + K log K), here g = number of unique sell dates & k = number of unique products on that date
 	- Space Complexity: O(G + K)
+
+2. Solution with CTE, Window function, Join & GROUP BY with Runtime 516 ms (beats 42.06%):
+
+
+WITH DistinctProducts AS (
+    SELECT 
+        sell_date,
+        product
+    FROM activities
+    GROUP BY sell_date, product
+),
+AggregatedData AS (
+    SELECT 
+        sell_date,
+        COUNT(product) OVER (PARTITION BY sell_date) AS num_sold
+    FROM DistinctProducts
+)
+SELECT 
+    dp.sell_date,
+    ad.num_sold,
+    (SELECT 
+         GROUP_CONCAT(dp2.product ORDER BY dp2.product ASC) 
+     FROM DistinctProducts dp2 
+     WHERE dp2.sell_date = dp.sell_date
+    ) AS products
+FROM DistinctProducts dp
+JOIN AggregatedData ad ON dp.sell_date = ad.sell_date
+GROUP BY dp.sell_date, ad.num_sold
+ORDER BY dp.sell_date ASC;
