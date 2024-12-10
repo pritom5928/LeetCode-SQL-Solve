@@ -62,3 +62,6 @@ SELECT
 FROM activities
 GROUP BY sell_date
 ORDER BY sell_date ASC;
+
+	- Time Complexity: O(N + G log G + K log K), here g = number of unique sell dates & k = number of unique products on that date
+	- Space Complexity: O(G + K)
