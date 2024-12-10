@@ -113,3 +113,7 @@ FROM filtered_Order r
 JOIN products p ON p.product_id = r.product_id
 WHERE r.rn = 1 
   AND r.total >= 100;
+
+
+	- Time complexity: O(N + M), here N = numbers of products, M = number of orders
+	- Space complexity: O(M)
