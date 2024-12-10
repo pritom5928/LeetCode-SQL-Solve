@@ -136,3 +136,6 @@ JOIN (
     HAVING SUM(o.unit) >= 100
 ) o ON p.product_id = o.product_id
 ORDER BY p.product_name;
+
+	- Time complexity: O(M log M + N + k + K log K), here N = numbers of products, M = number of orders, K = size of the sub-query result
+	- Space complexity: O(K), here K = numbers of unique product_id from sub-query result
