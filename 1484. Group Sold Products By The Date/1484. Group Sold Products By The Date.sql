@@ -53,7 +53,7 @@ For 2020-06-02, the Sold item is (Mask), we just return it.
 
 
 
-1. Optimal Solution with GROUP BY & GROUP_CONCAT() function with Runtime 730 ms (beats 82.66%):
+1. Optimal Solution with GROUP BY & GROUP_CONCAT() function with Runtime 409 ms (beats 95.68%):
 
 SELECT 
     sell_date,
