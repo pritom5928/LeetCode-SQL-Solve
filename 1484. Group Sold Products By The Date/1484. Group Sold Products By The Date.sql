@@ -53,12 +53,12 @@ For 2020-06-02, the Sold item is (Mask), we just return it.
 
 
 
-Solution with 730 ms runtime beats 82.66% MySQL submission:
+1. Optimal Solution with GROUP BY & GROUP_CONCAT() function with Runtime 730 ms (beats 82.66%):
 
-select 
-  sell_date,
-  count(distinct product) as num_sold,
-  group_concat(distinct product order by product asc) as products
-from activities
-group by sell_date
-order by sell_date asc
+SELECT 
+    sell_date,
+    COUNT(DISTINCT product) AS num_sold,
+    GROUP_CONCAT(DISTINCT product ORDER BY product ASC) AS products
+FROM activities
+GROUP BY sell_date
+ORDER BY sell_date ASC;
