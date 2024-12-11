@@ -71,8 +71,10 @@ JOIN Logs l2 ON l2.id = l1.id + 1
 JOIN Logs l3 ON l3.id = l2.id + 1
 WHERE l1.num = l2.num AND l1.num = l3.num;
 
-3. Solution with window function Runtime 550ms (Beats 78.05%):
-
+3. Optimal Solution with window function Runtime 516ms (Beats 91.16%):
+	
+	- Time complexity: O(N log N)
+	- Space complexity: O(N)
 
 SELECT 
 	DISTINCT Num AS ConsecutiveNums
