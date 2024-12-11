@@ -48,7 +48,7 @@ Explanation: 1 is the only number that appears consecutively for at least three 
 
 
 
-Naive Solution: 
+1. Solution with Cross Join with Runtime 733ms (Beats 20.59%): 
 
 SELECT 
 	DISTINCT(l1.Num) AS ConsecutiveNums
