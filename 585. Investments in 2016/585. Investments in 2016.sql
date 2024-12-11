@@ -78,7 +78,7 @@ WHERE i1.tiv_2015 IN (
 );
 
 
-Optimal solution using Exists Runtime 855 ms Beats 84.27% MySQL submission:
+2. Optimal solution using EXISTS & NOT EXISTS with Runtime 507 ms Beats 87.25% MySQL submission:
 
 SELECT 
 	ROUND(SUM(TIV_2016),2) AS TIV_2016 
