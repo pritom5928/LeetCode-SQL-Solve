@@ -80,6 +80,9 @@ WHERE i1.tiv_2015 IN (
 
 2. Optimal solution using EXISTS & NOT EXISTS with Runtime 507 ms Beats 87.25% MySQL submission:
 
+	- Time complexity: O(N^2)
+	- Space complexity: O(1)
+
 SELECT 
 	ROUND(SUM(TIV_2016),2) AS TIV_2016 
 FROM Insurance a
