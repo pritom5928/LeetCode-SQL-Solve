@@ -59,6 +59,9 @@ So, the result is the sum of tiv_2016 of the first and last record, which is 45.
 
 1. Solution with sub-query Runtime 601 ms Beats 47.12% MySQL submission:
 
+	- Time complexity: O(N^3)
+	- Space complexity: O(N)
+
 SELECT 
    ROUND(SUM(tiv_2016), 2) AS tiv_2016 
 FROM insurance i1
