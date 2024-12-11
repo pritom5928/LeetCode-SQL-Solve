@@ -61,6 +61,9 @@ WHERE (l2.id = l1.id+1 AND l3.id = l2.id+1) AND (l1.num = l2.num AND l1.num = l3
 
 2. Solution with Self Join Runtime 579ms (Beats 64.83%):
 
+	- Time complexity: O(N^2)
+	- Space complexity: O(N^2)
+
 SELECT 
 	DISTINCT l1.Num AS ConsecutiveNums
 FROM Logs l1
