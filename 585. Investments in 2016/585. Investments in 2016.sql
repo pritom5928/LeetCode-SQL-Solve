@@ -15,7 +15,7 @@ Table: Insurance
 +-------------+-------+
 pid is the primary key column for this table.
 Each row of this table contains information about one policy where:
-pid is the policyholder's policy ID.
+pid is the policyholders policy ID.
 tiv_2015 is the total investment value in 2015 and tiv_2016 is the total investment value in 2016.
 lat is the latitude of the policy holder's city. It's guaranteed that lat is not NULL.
 lon is the longitude of the policy holder's city. It's guaranteed that lon is not NULL.
@@ -57,7 +57,7 @@ The second record does not meet any of the two criteria. Its tiv_2015 is not lik
 So, the result is the sum of tiv_2016 of the first and last record, which is 45.
 
 
-Solution with sub-query Runtime 1000 ms Beats 47.52% MySQL submission:
+1. Solution with sub-query Runtime 601 ms Beats 47.12% MySQL submission:
 
 SELECT 
    ROUND(SUM(tiv_2016), 2) AS tiv_2016 
