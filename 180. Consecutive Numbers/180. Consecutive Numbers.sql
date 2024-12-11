@@ -50,6 +50,9 @@ Explanation: 1 is the only number that appears consecutively for at least three 
 
 1. Solution with Cross Join with Runtime 733ms (Beats 20.59%): 
 
+	- Time complexity: O(N^3)
+	- Space complexity: O(N^3)
+
 SELECT 
 	DISTINCT(l1.Num) AS ConsecutiveNums
 FROM Logs l1, Logs l2, Logs l3 
