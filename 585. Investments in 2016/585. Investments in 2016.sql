@@ -101,6 +101,8 @@ AND NOT EXISTS (
 
 3. Solution using Correlated sub-query with runtime 674ms Beats 27.69% MySQL submission:
 
+	- Time complexity: O(N^2)
+	- Space complexity: O(1)
 
 SELECT 
     ROUND(SUM(TIV_2016), 2) AS TIV_2016
