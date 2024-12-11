@@ -70,3 +70,17 @@ FROM Logs l1
 JOIN Logs l2 ON l2.id = l1.id + 1
 JOIN Logs l3 ON l3.id = l2.id + 1
 WHERE l1.num = l2.num AND l1.num = l3.num;
+
+3. Solution with window function Runtime 550ms (Beats 78.05%):
+
+
+SELECT 
+	DISTINCT Num AS ConsecutiveNums
+FROM (
+    SELECT 
+        Num,
+        LEAD(Num, 1) OVER (ORDER BY id) AS NextNum1,
+        LEAD(Num, 2) OVER (ORDER BY id) AS NextNum2
+    FROM Logs
+) subquery
+WHERE Num = NextNum1 AND Num = NextNum2;
