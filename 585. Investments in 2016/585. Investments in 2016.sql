@@ -98,3 +98,18 @@ AND NOT EXISTS (
 	FROM Insurance 
     WHERE PID <> a.PID AND (LAT,LON) = (a.LAT,a.LON)
 );
+
+3. Solution using Correlated sub-query with runtime 674ms Beats 27.69% MySQL submission:
+
+
+SELECT 
+    ROUND(SUM(TIV_2016), 2) AS TIV_2016
+FROM Insurance a
+WHERE 
+    (SELECT COUNT(*) 
+     FROM Insurance b 
+     WHERE b.TIV_2015 = a.TIV_2015 AND b.PID <> a.PID) > 0
+    AND 
+    (SELECT COUNT(*) 
+     FROM Insurance c 
+     WHERE c.LAT = a.LAT AND c.LON = a.LON AND c.PID <> a.PID) = 0;
