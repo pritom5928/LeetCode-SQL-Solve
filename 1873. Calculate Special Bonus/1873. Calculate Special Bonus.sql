@@ -81,3 +81,15 @@ SELECT
 FROM employees
 ORDER BY employee_id;
 
+3. Optimal solution with expression & boolean value beats 60.39% with runtime 1012 ms:
+
+Time Complexity: O(N log N)
+Space Complexity: O(N)
+
+SELECT 
+    employee_id,
+    salary * ((employee_id % 2 = 1) AND name NOT LIKE 'M%') AS bonus   
+FROM employees
+ORDER BY employee_id;
+
+
