@@ -85,4 +85,22 @@ SELECT
     MAX(time_stamp) AS last_stamp
 FROM logins
 WHERE YEAR(time_stamp) = 2020
-GROUP BY user_id
+GROUP BY user_id;
+
+
+3. Solution with Correlated subquery beats 24.46% & runtime 1391ms:
+
+Time complexity: O(N^2)
+Space complexity: O(G) => G is the number of unique users
+
+SELECT 
+    l1.user_id, 
+    l1.time_stamp AS last_stamp
+FROM logins l1
+WHERE YEAR(l1.time_stamp) = 2020
+AND l1.time_stamp = (
+    SELECT MAX(l2.time_stamp) 
+    FROM logins l2 
+    WHERE l2.user_id = l1.user_id 
+    AND YEAR(l2.time_stamp) = 2020
+);
