@@ -73,3 +73,16 @@ SELECT
     time_stamp AS last_stamp
 FROM cte
 WHERE rn = 1;
+	
+
+2. Solution with Group By beats 91.72% & runtime 663ms:
+
+Time complexity: O(N log G) =>  G = number of unique user_ids, and N = total rows
+Space complexity: O(N)
+
+SELECT 
+    user_id, 
+    MAX(time_stamp) AS last_stamp
+FROM logins
+WHERE YEAR(time_stamp) = 2020
+GROUP BY user_id
