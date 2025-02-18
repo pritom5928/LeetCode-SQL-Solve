@@ -54,3 +54,22 @@ User 2 logged into their account 2 times but only once in 2020, so we include th
 User 14 did not login in 2020, so we do not include them in the result table.
 
 
+1. Solution with CTE & Window function beats 95.70% & runtime 623ms:
+
+Time complexity: O(N log N)
+Space complexity: O(N)
+
+
+WITH cte AS (
+    SELECT 
+        user_id,
+        time_stamp,
+        ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY time_stamp DESC) AS rn
+    FROM logins
+    WHERE YEAR(time_stamp) = 2020
+)
+SELECT 
+    user_id,
+    time_stamp AS last_stamp
+FROM cte
+WHERE rn = 1;
