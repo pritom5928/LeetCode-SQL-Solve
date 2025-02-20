@@ -109,3 +109,32 @@ FROM salaries s
 LEFT JOIN employees e ON e.employee_id = s.employee_id
 WHERE e.employee_id IS NULL
 ORDER BY employee_id;
+
+
+3. Solution with Correlated sub-query with runtime 556ms beats 95.47%:
+
+ - Time complexity: O(m × n)
+ - Space complexity: O(k) => k is the number of rows of unmatched employees in both table 
+ 
+SELECT 
+    e.employee_id
+FROM employees e
+WHERE NOT EXISTS(
+		SELECT 
+            1
+        FROM salaries s
+        WHERE e.employee_id = s.employee_id
+) 
+UNION 
+SELECT 
+    s.employee_id
+FROM salaries s
+WHERE NOT EXISTS(
+		SELECT 
+            1
+        FROM
+            employees e
+        WHERE
+            e.employee_id = s.employee_id
+)
+ORDER BY employee_id;
