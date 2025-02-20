@@ -64,3 +64,29 @@ Explanation:
 Employees 1, 2, 4, and 5 are working at this company.
 The name of employee 1 is missing.
 The salary of employee 2 is missing.
+
+
+1. Brute force solution with sub-query with runtime 1071ms beats 40.57%:
+
+ - Time complexity:  O(N * M)
+ - Space complexity:  O(N + M + R) => N = total rows from first sub-query, M= Total rows from second sub-query, R = total rows after UNION
+ 
+ 
+SELECT 
+    employee_id
+FROM employees
+WHERE employee_id NOT IN (	
+		SELECT 
+            employee_id
+        FROM salaries
+) 
+UNION 
+SELECT 
+    employee_id
+FROM salaries
+WHERE employee_id NOT IN 
+		(SELECT 
+            employee_id
+        FROM employees
+)
+ORDER BY employee_id
