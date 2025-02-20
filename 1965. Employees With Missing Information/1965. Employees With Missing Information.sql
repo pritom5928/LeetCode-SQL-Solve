@@ -89,4 +89,23 @@ WHERE employee_id NOT IN
             employee_id
         FROM employees
 )
-ORDER BY employee_id
+ORDER BY employee_id;
+
+
+2. Solution with Join with runtime 1184ms beats 29.10%:
+
+ - Time complexity: O(m × n) + O(n × m) + O(k log k) => union & order by costs O(k log k)
+ - Space complexity: O(m × n)
+ 
+SELECT 
+    e.employee_id
+FROM employees e
+LEFT JOIN salaries s ON e.employee_id = s.employee_id
+WHERE s.employee_id IS NULL 
+UNION 
+SELECT 
+    s.employee_id
+FROM salaries s
+LEFT JOIN employees e ON e.employee_id = s.employee_id
+WHERE e.employee_id IS NULL
+ORDER BY employee_id;
