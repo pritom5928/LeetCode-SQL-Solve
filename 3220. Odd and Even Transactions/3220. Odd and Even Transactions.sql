@@ -60,3 +60,17 @@ Sum of amounts for even transactions: 300 + 50 = 350
 Sum of amounts for odd transactions: 0
 Sum of amounts for even transactions: 120
 Note: The output table is ordered by transaction_date in ascending order.
+
+
+1. Solution with Group by with Runtime 430ms beats 75.69%:
+
+  - Time Complexity: O(N log N)
+  - Space Complexity: O(N)
+
+SELECT 
+    transaction_date,
+    SUM(IF(amount % 2 = 1, amount, 0)) AS odd_sum,
+    SUM(IF(amount % 2 = 0, amount, 0)) AS even_sum
+FROM transactions
+GROUP BY transaction_date
+ORDER BY transaction_date;
