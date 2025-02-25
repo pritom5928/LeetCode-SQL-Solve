@@ -95,3 +95,31 @@ SELECT
     c.even_sum
 FROM cte c
 WHERE c.rn = 1;
+
+
+3. Solution with Correlated subquery Runtime 324ms beats 88.86%:
+
+  - Time Complexity: O(N * G) => G is the numbers of unique transactions date
+  - Space Complexity: O(N)
+
+SELECT 
+    t1.transaction_date,
+    COALESCE((SELECT 
+                    SUM(amount)
+                FROM transactions
+                WHERE t1.transaction_date = transaction_date
+                        AND amount % 2 = 1),
+            0) AS odd_sum,
+    COALESCE((SELECT 
+                    SUM(amount)
+                FROM transactions
+                WHERE t1.transaction_date = transaction_date
+                        AND amount % 2 = 0),
+            0) AS even_sum
+FROM
+    (SELECT 
+		DISTINCT transaction_date
+    FROM transactions
+    ORDER BY transaction_date
+    ) t1;
+
