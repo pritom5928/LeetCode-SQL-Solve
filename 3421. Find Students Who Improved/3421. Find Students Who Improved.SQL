@@ -11,7 +11,7 @@ Table: Scores
 | exam_date   | varchar |
 +-------------+---------+
 (student_id, subject, exam_date) is the primary key for this table.
-Each row contains information about a student's score in a specific subject on a particular exam date. score is between 0 and 100 (inclusive).
+Each row contains information about a students score in a specific subject on a particular exam date. score is between 0 and 100 (inclusive).
 Write a solution to find the students who have shown improvement. A student is considered to have shown improvement if they meet both of these conditions:
 
 Have taken exams in the same subject on at least two different dates
@@ -84,3 +84,48 @@ FROM cte
 GROUP BY student_id, subject 
 HAVING first_score < latest_score;
 
+
+
+2. Solution with window function & cte runtime 423ms beats 82.29%:
+
+   - Time complexity: O(N^2)
+   - Space complexity: O(N)
+
+SELECT 
+    a.student_id,
+    a.subject,
+    a.score AS first_score,
+    b.score AS latest_score
+FROM (
+    SELECT 
+        *
+    FROM scores
+    GROUP BY student_id, subject
+    HAVING 
+        MIN(exam_date) < MAX(exam_date) 
+        AND MIN(score) < MAX(score)
+) a
+JOIN scores b 
+    ON a.student_id = b.student_id 
+    AND a.subject = b.subject
+WHERE 
+    a.score < b.score 
+    AND a.exam_date < b.exam_date 
+    AND b.exam_date = (
+        SELECT MAX(exam_date) 
+        FROM scores c 
+        WHERE c.student_id = a.student_id 
+            AND c.subject = a.subject
+    )
+    AND a.exam_date = (
+        SELECT MIN(exam_date) 
+        FROM scores c 
+        WHERE c.student_id = a.student_id 
+            AND c.subject = a.subject
+    )
+GROUP BY 
+    b.student_id, 
+    b.subject
+ORDER BY 
+    b.student_id, 
+    b.subject;
