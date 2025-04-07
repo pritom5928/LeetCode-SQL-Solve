@@ -64,3 +64,19 @@ SELECT
 FROM users
 WHERE email REGEXP '^[a-zA-Z0-9_]+@[a-zA-Z]+.(com)$'
 ORDER BY user_id;
+
+
+2. Solution with Runtime 301ms Beats 96.63% of MySQL submission:
+
+	- Time complexity: O(n * m + n log n), n = total rows in user table, m = length of the string in email feild
+	- Space complexity: O(n)
+
+SELECT 
+    *
+FROM users
+WHERE email LIKE '%@%.com'
+        AND SUBSTR(email, 1, LOCATE('@', email) - 1) REGEXP '^[a-zA-Z0-9_]+$'
+        AND SUBSTR(email,
+        LOCATE('@', email) + 1,
+        LENGTH(email) - LOCATE('@', email) - 4) REGEXP '^[a-zA-Z]+$'
+ORDER BY user_id;
