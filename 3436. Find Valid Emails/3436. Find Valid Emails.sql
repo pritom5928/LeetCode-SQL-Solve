@@ -52,3 +52,15 @@ charlie@example.net is invalid because the domain does not end with .com.
 david@domain.com is valid because it meets all criteria.
 eve@invalid is invalid because the domain does not end with .com.
 Result table is ordered by user_id in ascending order.
+
+1. Solution with Runtime 1068ms Beats 5.15% of MySQL submission:
+
+	- Time complexity: O(n * m + n log n), n = total rows in user table, m = length of the string in email feild
+	- Space complexity: O(n)
+	
+	
+SELECT 
+    *
+FROM users
+WHERE email REGEXP '^[a-zA-Z0-9_]+@[a-zA-Z]+.(com)$'
+ORDER BY user_id;
