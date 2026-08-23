@@ -124,3 +124,24 @@ FROM library_books lb
 JOIN non_returned_copies nrc ON lb.book_id = nrc.book_id
 WHERE lb.total_copies = nrc.Total_non_returned_copies
 ORDER BY current_borrowers DESC, lb.title ASC;
+
+2. Solution with Correlated sub-query with runtime 606ms beats 44.04%:
+ 
+ - Time complexity: O(B * R) => B = rows in library_books, R = rows in borrowing_records; the correlated subquery re-scans borrowing_records for every row of library_books
+ - Space complexity: O(B) => output holds up to B matching rows, subquery itself uses O(1) extra space per call
+ 
+SELECT 
+	lb.book_id,
+	lb.title,
+    lb.author,
+    lb.genre,
+    lb.publication_year,
+    lb.total_copies AS current_borrowers  
+FROM library_books lb 
+WHERE lb.total_copies = (
+							SELECT 
+								COUNT(1) 
+							FROM borrowing_records br 
+							WHERE br.book_id = lb.book_id AND br.return_date IS NULL
+						)
+ORDER BY lb.total_copies DESC, lb.title ASC;
