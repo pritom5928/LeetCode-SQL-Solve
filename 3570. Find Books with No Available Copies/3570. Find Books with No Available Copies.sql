@@ -100,6 +100,7 @@ The Great Gatsby appears first with 3 current borrowers
 1984 appears second with 1 current borrower
 Output table is ordered by current_borrowers in descending order, then by book_title in ascending order.
 
+
 1. Solution with CTE (aggregate non-returned copies, then join) with runtime 518ms beats 90.24%:
  
  - Time complexity: O(B log B + R) => R = rows scanned/grouped in borrowing_records for the CTE, B = rows in library_books, B log B from the final ORDER BY
@@ -145,3 +146,22 @@ WHERE lb.total_copies = (
 							WHERE br.book_id = lb.book_id AND br.return_date IS NULL
 						)
 ORDER BY lb.total_copies DESC, lb.title ASC;
+
+
+3. Solution with JOIN + GROUP BY + HAVING with runtime 553ms beats 72.29%:
+ 
+ - Time complexity: O(R + B log B) => R = rows scanned in borrowing_records for the join/aggregation, B log B from the final ORDER BY
+ - Space complexity: O(B) => grouped output holds at most one row per book
+ 
+SELECT 
+    a.book_id,
+    a.title,
+    a.author,
+    a.genre,
+    a.publication_year,
+    COUNT(CASE WHEN b.return_date IS NULL THEN 1 END) AS current_borrowers
+FROM library_books a 
+JOIN borrowing_records b ON a.book_id = b.book_id
+GROUP BY a.book_id, a.title, a.author, a.genre, a.publication_year, a.total_copies
+HAVING a.total_copies = current_borrowers
+ORDER BY current_borrowers DESC, a.title ASC;
