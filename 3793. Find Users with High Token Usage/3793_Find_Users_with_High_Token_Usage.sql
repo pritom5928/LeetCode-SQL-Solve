@@ -75,8 +75,7 @@ Output:
 
 1. Solution with self-join, runtime 289ms beats 83.43%:
 
-	- Time complexity: O(U * N) => U = distinct users, N = rows in
-	prompts; the derived table a is joined against prompts b for every user
+	- Time complexity: O(U * N) => U = distinct users, N = rows in prompts; the derived table a is joined against prompts b for every user
     - Space complexity: O(U) => output holds at most U rows after DISTINCT collapses join duplicates
 	
 	
@@ -93,3 +92,18 @@ FROM
         JOIN prompts b ON a.user_id = b.user_id
         AND a.avg_tokens > b.tokens
 ORDER BY avg_tokens DESC , a.user_id ASC;
+
+
+2. Solution with GROUP BY / HAVING, runtime 293ms beats 79.15%:
+
+   - Time complexity: O(N) => N = rows in prompts; single pass over prompts to group and aggregate
+   - Space complexity: O(U) => U = distinct users; one row held per user in the aggregate result
+   
+	SELECT
+			user_id,
+            COUNT(1) AS prompt_count,
+            ROUND(AVG(tokens), 2) AS avg_tokens
+    FROM prompts
+    GROUP BY user_id
+    HAVING prompt_count > 2 and MAX(tokens) > avg_tokens
+    ORDER BY avg_tokens DESC, user_id ASC;
