@@ -107,3 +107,23 @@ ORDER BY avg_tokens DESC , a.user_id ASC;
     GROUP BY user_id
     HAVING prompt_count > 2 and MAX(tokens) > avg_tokens
     ORDER BY avg_tokens DESC, user_id ASC;
+	
+	
+3. Solution with CTE & WINDOW functions, runtime 285ms beats 87.46%:
+
+	- Time complexity: O(N log N) => N = rows in prompts; the window functions require a partition + sort pass over all N rows, and the final ORDER BY adds another sort
+	- Space complexity: O(N) => the CTE materializes one row per original prompt (with partition aggregates attached) before DISTINCT collapses it down to at most U output rows
+
+WITH cte AS (
+	SELECT
+			user_id,
+			tokens,
+			COUNT(1) OVER(PARTITION BY user_id) AS prompt_count,
+			ROUND(AVG(tokens) OVER(PARTITION BY user_id), 2) AS avg_tokens
+	FROM prompts
+)
+SELECT DISTINCT
+    user_id, prompt_count, avg_tokens
+FROM cte
+WHERE prompt_count > 2 AND tokens > avg_tokens
+ORDER BY avg_tokens DESC , user_id ASC;
